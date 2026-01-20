@@ -10,6 +10,15 @@ import Planner from './pages/Planner';
 import WhoItsFor from './pages/WhoItsFor';
 import About from './pages/About';
 import Account from './pages/Account';
+import Checkout from './pages/Checkout';
+
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [pathname]);
+  return null;
+};
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,17 +29,17 @@ const Navbar: React.FC = () => {
   return (
     <nav className="fixed top-0 w-full z-50 bg-[#FAF9F6]/80 backdrop-blur-md border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        <Link to="/" className="text-xl font-medium tracking-tight hover:opacity-70 transition-opacity">
+        <Link to="/" className="text-xl font-medium tracking-tight hover:opacity-70 transition-opacity flex items-center gap-2">
+          <div className="w-2 h-2 rounded-full bg-black animate-pulse" />
           Life OS <span className="text-gray-400">90</span>
         </Link>
         
-        <div className="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-600">
+        <div className="hidden md:flex items-center space-x-10 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">
           <Link to="/what-is" className="hover:text-black transition-colors">Philosophy</Link>
-          <Link to="/how-it-works" className="hover:text-black transition-colors">How it works</Link>
-          <Link to="/features" className="hover:text-black transition-colors">Features</Link>
-          <Link to="/planner" className="hover:text-black transition-colors">The Planner</Link>
-          <Link to="/account" className="px-5 py-2.5 bg-black text-white rounded-full hover:bg-gray-800 transition-all">
-            Start Audit
+          <Link to="/how-it-works" className="hover:text-black transition-colors">Method</Link>
+          <Link to="/planner" className="hover:text-black transition-colors">The Kit</Link>
+          <Link to="/account" className="px-6 py-2.5 bg-black text-white rounded-full hover:bg-zinc-800 transition-all shadow-lg shadow-black/5">
+            Begin Audit
           </Link>
         </div>
 
@@ -39,13 +48,12 @@ const Navbar: React.FC = () => {
         </button>
       </div>
 
-      {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden absolute top-20 left-0 w-full bg-[#FAF9F6] border-b border-gray-100 p-6 flex flex-col space-y-6 animate-in slide-in-from-top-4 duration-300">
-          <Link to="/what-is" className="text-lg">Philosophy</Link>
-          <Link to="/how-it-works" className="text-lg">How it works</Link>
-          <Link to="/planner" className="text-lg">The Planner</Link>
-          <Link to="/account" className="text-lg font-medium">Get My Manifest</Link>
+        <div className="md:hidden absolute top-20 left-0 w-full bg-[#FAF9F6] border-b border-gray-100 p-8 flex flex-col space-y-8 animate-in slide-in-from-top-4 duration-300">
+          <Link to="/what-is" className="text-2xl serif italic">Philosophy</Link>
+          <Link to="/how-it-works" className="text-2xl serif italic">Method</Link>
+          <Link to="/planner" className="text-2xl serif italic">The Kit</Link>
+          <Link to="/account" className="text-lg font-bold uppercase tracking-widest text-black">Start My Audit</Link>
         </div>
       )}
     </nav>
@@ -53,33 +61,38 @@ const Navbar: React.FC = () => {
 };
 
 const Footer: React.FC = () => (
-  <footer className="bg-white border-t border-gray-100 pt-20 pb-10">
+  <footer className="bg-white border-t border-gray-100 pt-32 pb-16">
     <div className="max-w-7xl mx-auto px-6">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-20 mb-20">
         <div className="col-span-1 md:col-span-2">
-          <h2 className="text-2xl serif mb-6">Life OS 90</h2>
-          <p className="text-gray-500 max-w-sm leading-relaxed mb-6">
-            A system for clarity in a world of noise. We believe productivity is about knowing yourself, not just doing more.
+          <h2 className="text-3xl serif mb-8 italic">Life OS 90</h2>
+          <p className="text-gray-400 max-w-sm leading-relaxed mb-8 font-light text-lg">
+            A system for clarity in a world of infinite noise. Built for the intentional few.
           </p>
+          <div className="flex gap-4">
+             <div className="w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center opacity-40 hover:opacity-100 cursor-pointer transition-opacity">𝕏</div>
+             <div className="w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center opacity-40 hover:opacity-100 cursor-pointer transition-opacity">📸</div>
+          </div>
         </div>
         <div>
-          <h4 className="font-medium mb-6">The System</h4>
-          <ul className="space-y-4 text-sm text-gray-500">
-            <li><Link to="/planner" className="hover:text-black">The Physical Planner</Link></li>
-            <li><Link to="/how-it-works" className="hover:text-black">90-Day Cycle</Link></li>
-            <li><Link to="/account" className="hover:text-black">Onboarding Audit</Link></li>
+          <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-300 mb-8">Navigation</h4>
+          <ul className="space-y-4 text-sm text-gray-500 font-light">
+            <li><Link to="/planner" className="hover:text-black transition-colors">The Physical Kit</Link></li>
+            <li><Link to="/how-it-works" className="hover:text-black transition-colors">90-Day Method</Link></li>
+            <li><Link to="/account" className="hover:text-black transition-colors">Onboarding Audit</Link></li>
           </ul>
         </div>
         <div>
-          <h4 className="font-medium mb-6">Company</h4>
-          <ul className="space-y-4 text-sm text-gray-500">
-            <li><Link to="/about" className="hover:text-black">Our Philosophy</Link></li>
-            <li><a href="mailto:hello@lifeos90.com" className="hover:text-black">Support</a></li>
+          <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-300 mb-8">Access</h4>
+          <ul className="space-y-4 text-sm text-gray-500 font-light">
+            <li><Link to="/about" className="hover:text-black transition-colors">About Us</Link></li>
+            <li><a href="mailto:hello@lifeos90.com" className="hover:text-black transition-colors">Privacy Policy</a></li>
+            <li><span className="text-green-600 font-bold tracking-widest">BATCH 04 LIVE</span></li>
           </ul>
         </div>
       </div>
-      <div className="pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center text-xs text-gray-400">
-        <p>© {new Date().getFullYear()} Life OS 90. Built for Tier-1 cities.</p>
+      <div className="pt-10 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center text-[10px] text-gray-300 font-bold uppercase tracking-[0.3em]">
+        <p>© {new Date().getFullYear()} Life OS 90. India Domestic Fulfillment.</p>
         <p className="mt-4 md:mt-0">Calm is the ultimate luxury.</p>
       </div>
     </div>
@@ -89,6 +102,7 @@ const Footer: React.FC = () => (
 const App: React.FC = () => {
   return (
     <Router>
+      <ScrollToTop />
       <div className="min-h-screen flex flex-col pt-20">
         <Navbar />
         <main className="flex-grow">
@@ -101,6 +115,7 @@ const App: React.FC = () => {
             <Route path="/who-its-for" element={<WhoItsFor />} />
             <Route path="/about" element={<About />} />
             <Route path="/account" element={<Account />} />
+            <Route path="/checkout" element={<Checkout />} />
           </Routes>
         </main>
         <Footer />

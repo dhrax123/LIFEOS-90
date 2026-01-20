@@ -1,98 +1,136 @@
 
-import React, { useState } from 'react';
-import { generatePersonalManifest } from '../geminiService';
+import React, { useState, useEffect } from 'react';
+import { generatePersonalManifestStream } from '../geminiService';
 import { Link } from 'react-router-dom';
 
 const Account: React.FC = () => {
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({ name: '', role: '', struggle: '', customRole: '' });
-  const [manifest, setManifest] = useState('');
-  const [loading, setLoading] = useState(false);
+  
+  const [isThinking, setIsThinking] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
+  const [fullManifestText, setFullManifestText] = useState('');
+  const [displayedText, setDisplayedText] = useState('');
+  const [showCTA, setShowCTA] = useState(false);
+  const [chaskaMaska, setChaskaMaska] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const chaskaOptions = [
+    "Relax. You're actually doing fine.",
+    "The algorithm can wait. You can't.",
+    "One tab at a time. No rush.",
+    "You're not late. You're just building different.",
+    "This part is quieter. That's a good thing.",
+    "Your baseline is solid. Trust it."
+  ];
+
+  const handleAuditSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setStep(2); 
+    setIsThinking(true);
+    setChaskaMaska(chaskaOptions[Math.floor(Math.random() * chaskaOptions.length)]);
+    
     const roleToUse = formData.role === 'other' ? formData.customRole : formData.role;
-    const result = await generatePersonalManifest({ ...formData, role: roleToUse });
-    setManifest(result || "Your path is unique. Focus on the breath of today, and let the 90 days unfold with grace.");
-    setLoading(false);
-    setStep(2);
+    const stream = generatePersonalManifestStream({ ...formData, role: roleToUse });
+    
+    let aiAccumulated = '';
+    const fetchPromise = (async () => {
+      for await (const chunk of stream) {
+        aiAccumulated += chunk;
+      }
+      return aiAccumulated;
+    })();
+
+    const pausePromise = new Promise(resolve => setTimeout(resolve, 8500));
+    const [finalAIContent] = await Promise.all([fetchPromise, pausePromise]);
+    
+    setFullManifestText(finalAIContent.trim());
+    setIsThinking(false);
+    setIsTyping(true);
   };
+
+  useEffect(() => {
+    if (isTyping && fullManifestText) {
+      let index = 0;
+      const interval = setInterval(() => {
+        setDisplayedText(fullManifestText.slice(0, index + 1));
+        index++;
+        if (index >= fullManifestText.length) {
+          clearInterval(interval);
+          setIsTyping(false);
+          setTimeout(() => setShowCTA(true), 1500);
+        }
+      }, 40); 
+      return () => clearInterval(interval);
+    }
+  }, [isTyping, fullManifestText]);
 
   if (step === 0) {
     return (
-      <div className="max-w-md mx-auto px-6 py-32 text-center animate-in fade-in">
-        <h1 className="text-4xl md:text-5xl serif mb-6 italic">Who are you this season?</h1>
-        <p className="text-gray-500 mb-12 font-light leading-relaxed">Before the planner arrives, we need to find your baseline. A 3-minute audit to anchor your next 90 days.</p>
-        <button onClick={() => setStep(1)} className="w-full py-5 bg-black text-white rounded-2xl font-medium shadow-xl shadow-black/10 hover:bg-zinc-800 transition-all hover:scale-[1.02]">
-          Start My Audit
+      <div className="max-w-md mx-auto px-6 py-32 text-center animate-in fade-in zoom-in-95 duration-1000">
+        <h1 className="text-5xl md:text-7xl serif mb-8 italic leading-[1.1]">Identify Your <br/>Baseline.</h1>
+        <p className="text-gray-400 mb-12 font-light leading-relaxed text-lg">
+          The hardware arrives in 3 days. <br/>Let's configure the software today.
+        </p>
+        <button 
+          onClick={() => setStep(1)} 
+          className="w-full py-6 bg-black text-white rounded-full font-bold text-xl shadow-2xl hover:bg-zinc-800 transition-all hover:scale-[1.02] active:scale-95"
+        >
+          Begin The Audit
         </button>
-        <p className="mt-8 text-[10px] text-gray-300 uppercase tracking-widest font-bold">Privacy First • India Only</p>
       </div>
     );
   }
 
   if (step === 1) {
     return (
-      <div className="max-w-xl mx-auto px-6 py-20 animate-in slide-in-from-right-4 duration-500">
-        <h1 className="text-3xl serif mb-2 text-center italic">The Baseline Audit.</h1>
-        <p className="text-center text-gray-400 mb-12 text-sm font-light">Quiet your mind and be honest.</p>
-        <form onSubmit={handleSubmit} className="space-y-10">
-          <div>
-            <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 mb-4">Identity Name</label>
+      <div className="max-w-xl mx-auto px-6 py-20 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <h1 className="text-4xl md:text-5xl serif mb-16 text-center italic">The Configuration.</h1>
+        <form onSubmit={handleAuditSubmit} className="space-y-12">
+          <div className="space-y-4">
+            <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-300 ml-2">Human Name</label>
             <input 
               required
-              className="w-full bg-white border border-gray-100 p-6 rounded-[2rem] focus:outline-none focus:ring-2 focus:ring-black/5 transition-all text-lg shadow-sm font-light"
-              placeholder="How should we address you?"
+              className="w-full bg-white border border-gray-100 p-6 rounded-3xl focus:outline-none focus:border-black/10 transition-all text-xl font-light"
+              placeholder="First name or alias"
               value={formData.name}
               onChange={e => setFormData({...formData, name: e.target.value})}
             />
           </div>
-          <div>
-            <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 mb-4">Current Path</label>
-            <div className="grid grid-cols-2 gap-4 mb-4">
+
+          <div className="space-y-4">
+            <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-300 ml-2">Archetype</label>
+            <div className="grid grid-cols-2 gap-4">
               {['student', 'creator', 'founder', 'other'].map((r) => (
                 <button
                   key={r}
                   type="button"
                   onClick={() => setFormData({...formData, role: r})}
-                  className={`p-5 rounded-3xl border text-sm capitalize transition-all duration-300 flex items-center justify-center gap-2 ${
-                    formData.role === r 
-                    ? 'bg-black text-white border-black scale-[1.02] shadow-xl shadow-black/10' 
-                    : 'bg-white border-gray-100 hover:border-gray-200 text-gray-400 font-light'
+                  className={`p-6 rounded-3xl border text-sm capitalize transition-all duration-300 ${
+                    formData.role === r ? 'bg-black text-white border-black' : 'bg-white border-gray-100 text-gray-400'
                   }`}
                 >
-                  {r === 'other' ? 'Custom Path' : r}
-                  {formData.role === r && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>}
+                  {r}
                 </button>
               ))}
             </div>
-            {formData.role === 'other' && (
-              <input 
-                required
-                className="w-full bg-white border border-gray-100 p-6 rounded-[2rem] focus:outline-none focus:ring-2 focus:ring-black/5 transition-all text-lg shadow-sm animate-in slide-in-from-top-2"
-                placeholder="Describe your role..."
-                value={formData.customRole}
-                onChange={e => setFormData({...formData, customRole: e.target.value})}
-              />
-            )}
           </div>
-          <div>
-            <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 mb-4">Core Noise</label>
+
+          <div className="space-y-4">
+            <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-300 ml-2">Current Weight</label>
             <textarea 
               required
-              className="w-full bg-white border border-gray-100 p-6 rounded-[2rem] h-40 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all text-lg shadow-sm resize-none font-light"
-              placeholder="What feels heaviest today? The pressure to always be 'on'?"
+              className="w-full bg-white border border-gray-100 p-7 rounded-[2.5rem] h-40 focus:outline-none focus:border-black/10 transition-all text-lg font-light resize-none"
+              placeholder="What feels heaviest?"
               value={formData.struggle}
               onChange={e => setFormData({...formData, struggle: e.target.value})}
             />
           </div>
+
           <button 
             type="submit" 
-            disabled={loading}
-            className="w-full py-6 bg-black text-white rounded-[2rem] font-bold disabled:opacity-50 text-lg shadow-2xl shadow-black/10 hover:bg-zinc-800 transition-all active:scale-[0.98]"
+            className="w-full py-7 bg-black text-white rounded-full font-bold text-xl transition-all"
           >
-            {loading ? 'Analyzing Baseline...' : 'Generate Identity Card'}
+            Synthesize My Manifest
           </button>
         </form>
       </div>
@@ -100,69 +138,59 @@ const Account: React.FC = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-20 animate-in zoom-in-95 duration-700">
-      <div className="text-center mb-16">
-        <h1 className="text-4xl serif italic mb-3">Choosing Less.</h1>
-        <p className="text-gray-400 text-sm font-light">Your Season 01 Identity Card is ready for archival.</p>
+    <div className="min-h-[85vh] flex flex-col items-center justify-center px-6 py-20 bg-[#FAF9F6] animate-in fade-in duration-1000">
+      
+      {/* The Narrow, Book-like card */}
+      <div className="w-full max-w-sm bg-white p-12 md:p-14 rounded-[40px] border border-gray-100 manifest-glow relative min-h-[420px] flex items-center justify-center">
+        
+        {/* Subtle Marker */}
+        <div className="absolute top-10 right-10 text-[8px] font-bold text-gray-200 uppercase tracking-[0.5em] italic select-none">OS90/S1</div>
+
+        <div className="w-full">
+          {isThinking ? (
+            <div className="space-y-6 text-center animate-in fade-in duration-1000">
+               <div className="flex justify-center items-center gap-1.5 opacity-20">
+                  <div className="w-1 h-1 bg-black rounded-full animate-pulse" />
+                  <div className="w-1 h-1 bg-black rounded-full animate-pulse [animation-delay:200ms]" />
+                  <div className="w-1 h-1 bg-black rounded-full animate-pulse [animation-delay:400ms]" />
+               </div>
+               <p className="literary italic text-sm text-gray-300 font-light tracking-wide">
+                 Mapping your season...
+               </p>
+            </div>
+          ) : (
+            <div className="space-y-10">
+              <p className="literary italic text-xl md:text-2xl leading-[1.75] text-gray-700 font-light text-left whitespace-pre-wrap">
+                {displayedText}
+                {isTyping && <span className="inline-block w-[1px] h-5 bg-gray-200 ml-1 animate-pulse" />}
+              </p>
+              
+              {!isTyping && (
+                <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-gray-300 animate-in fade-in duration-1000">
+                  — {chaskaMaska}
+                </p>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
-      <div className="flex flex-col items-center">
-        {/* The "Identity Card" - Pinterest-core Aesthetic Artifact */}
-        <div className="w-full max-w-lg bg-[#FDFCFB] border border-gray-50 p-12 rounded-[56px] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.06)] relative overflow-hidden mb-16 group soft-gradient">
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gray-100 to-transparent opacity-50" />
-          
-          <div className="flex justify-between items-start mb-20">
-             <div className="flex flex-col">
-               <span className="text-[10px] font-bold text-gray-300 uppercase tracking-[0.4em] mb-1">Season 01</span>
-               <span className="text-[10px] text-gray-400 italic">Identity Fragment</span>
-             </div>
-             <div className="w-14 h-14 rounded-full border border-gray-100 flex items-center justify-center text-[10px] font-bold text-gray-200 italic bg-white shadow-sm">OS90</div>
-          </div>
-          
-          <div className="serif text-3xl leading-relaxed text-gray-800 italic mb-20 pr-4">
-            "This season, you are becoming..."
-            <p className="text-base font-light text-gray-500 mt-6 not-italic leading-relaxed">
-              {manifest}
-            </p>
-          </div>
-          
-          <div className="flex justify-between items-end pt-10 border-t border-gray-100/50">
-            <div>
-              <p className="text-[9px] font-bold text-gray-300 uppercase tracking-[0.3em] mb-2">Subject</p>
-              <p className="text-sm font-medium text-gray-700">{formData.name}</p>
-            </div>
-            <div className="text-right">
-              <p className="text-[9px] font-bold text-gray-300 uppercase tracking-[0.3em] mb-2">Core Path</p>
-              <p className="text-sm font-medium text-gray-700 capitalize">
-                {formData.role === 'other' ? formData.customRole : formData.role}
-              </p>
-            </div>
-          </div>
-          
-          <div className="absolute inset-x-0 bottom-4 flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
-            <span className="text-[8px] text-gray-300 uppercase tracking-[0.5em] font-bold">Screenshot to save your manifest</span>
-          </div>
-        </div>
-        
-        {/* Post-Audit CTA */}
-        <div className="w-full max-w-lg p-12 bg-black text-white rounded-[48px] text-center shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-16 -mt-16 blur-3xl" />
-          <h3 className="text-3xl serif mb-4 italic relative z-10">Anchor Your Identity.</h3>
-          <p className="text-gray-400 mb-10 text-sm leading-relaxed font-light relative z-10">
-            Your Identity Card is the software. Now you need the hardware. Your 180-page anchor ships in a hand-woven basket with ritual silk and candles.
-          </p>
+      {showCTA && (
+        <div className="mt-16 text-center animate-in slide-in-from-bottom-8 duration-1000">
           <Link 
             to="/planner" 
-            className="inline-block w-full py-6 bg-white text-black rounded-full font-bold text-xl hover:scale-[1.03] transition-transform active:scale-95 shadow-xl relative z-10"
+            className="inline-block px-12 py-5 bg-black text-white rounded-full font-bold text-lg hover:scale-[1.03] transition-transform active:scale-95 shadow-xl shadow-black/5"
           >
-            Claim My Season Kit — Buy Now
+            Claim My Season Kit — $19
           </Link>
-          <div className="mt-8 flex items-center justify-center gap-3 relative z-10">
-             <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-             <p className="text-[10px] text-gray-500 uppercase tracking-[0.3em] font-bold">Batch 04 India Shipments Active</p>
+          <div className="mt-6 flex items-center justify-center gap-3 opacity-20">
+             <div className="w-1 h-px bg-black flex-grow max-w-[20px]" />
+             <p className="text-[9px] text-black uppercase tracking-[0.4em] font-bold">India Domestic Fulfillment</p>
+             <div className="w-1 h-px bg-black flex-grow max-w-[20px]" />
           </div>
         </div>
-      </div>
+      )}
+
     </div>
   );
 };

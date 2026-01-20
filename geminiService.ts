@@ -1,26 +1,41 @@
 
-import { GoogleGenAI, Type } from "@google/genai";
+import { GoogleGenAI } from "@google/genai";
 
-const apiKey = process.env.API_KEY || '';
-const ai = new GoogleGenAI({ apiKey });
-
-export async function generatePersonalManifest(userData: {
+export async function* generatePersonalManifestStream(userData: {
   name: string;
   role: string;
   struggle: string;
 }) {
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+  
   try {
-    const response = await ai.models.generateContent({
+    const responseStream = await ai.models.generateContentStream({
       model: "gemini-3-flash-preview",
-      contents: `Generate a short, calm, and grounding "Life OS Manifest" for someone named ${userData.name} who is a ${userData.role} and feels ${userData.struggle}. Keep it under 100 words. Focus on clarity and self-compassion.`,
+      contents: `Generate a short, grounded seasonal guidance message for ${userData.name}, who is a ${userData.role} dealing with ${userData.struggle}. 
+      
+      Tone: Calm mentor. Confident, practical, friendly, and direct. 
+      Style: Clean, modern phrasing. Short to medium sentences. Clear over clever.
+      Strictly Avoid: Poetry, flowery metaphors, spiritual/mystical language, and "hustle" cliches.
+      
+      Structure:
+      1. Opening: A grounding line about where they are right now/what phase they are in.
+      2. Middle: Practical insights on what to focus on and what to stop overthinking this season.
+      3. Closing: A steady, action-oriented, and reassuring wrap-up.
+      
+      Length: Approximately 80-100 words. Keep it professional but relatable to a Gen Z professional.`,
       config: {
         temperature: 0.7,
-        topP: 0.95,
+        topP: 0.9,
       },
     });
-    return response.text;
+
+    for await (const chunk of responseStream) {
+      if (chunk.text) {
+        yield chunk.text;
+      }
+    }
   } catch (error) {
     console.error("Gemini Error:", error);
-    return "Your path is unique. Focus on the breath of today, and let the 90 days unfold with grace.";
+    yield "You're at a baseline where clarity starts. Focus on stabilizing your current rhythm. Overthinking the finish line only slows the start. You're on track.";
   }
 }

@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const FAQItem = ({ q, a }: { q: string, a: string }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,6 +19,7 @@ const FAQItem = ({ q, a }: { q: string, a: string }) => {
 };
 
 const CheckoutDrawer = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => {
+  const navigate = useNavigate();
   if (!isOpen) return null;
   return (
     <div className="fixed inset-0 z-[100] overflow-hidden">
@@ -36,7 +38,7 @@ const CheckoutDrawer = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => v
         <div className="flex-grow">
           <div className="flex gap-5 items-start p-5 bg-[#FAF9F6] rounded-[2rem] border border-gray-100 mb-8">
             <div className="w-20 h-24 bg-gray-200 rounded-2xl overflow-hidden flex-shrink-0 shadow-sm">
-               <img src="https://images.unsplash.com/photo-1512485694743-9c9538b4e6e0?q=80&w=200&auto=format&fit=crop" className="w-full h-full object-cover" alt="Season 1 Kit" />
+               <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=400&auto=format&fit=crop" className="w-full h-full object-cover" alt="Season 1 Kit" />
             </div>
             <div className="py-1">
               <h4 className="font-bold text-[10px] uppercase tracking-widest mb-1">Life OS 90: Season 1</h4>
@@ -62,7 +64,10 @@ const CheckoutDrawer = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => v
         </div>
 
         <div className="space-y-4">
-          <button className="w-full py-5 bg-black text-white rounded-full font-bold text-lg hover:bg-zinc-800 transition-all shadow-xl shadow-black/10 active:scale-[0.98]">
+          <button 
+            onClick={() => navigate('/checkout')}
+            className="w-full py-5 bg-black text-white rounded-full font-bold text-lg hover:bg-zinc-800 transition-all shadow-xl shadow-black/10 active:scale-[0.98]"
+          >
             Checkout in India
           </button>
           <div className="flex items-center justify-center gap-2 opacity-30">
@@ -114,9 +119,9 @@ const Planner: React.FC = () => {
         <div className="relative">
            <div className="bg-[#F5F3EF] rounded-[60px] p-6 card-shadow overflow-hidden">
              <img 
-              src="https://images.unsplash.com/photo-1512485694743-9c9538b4e6e0?q=80&w=1000&auto=format&fit=crop" 
-              alt="Tactile book close-up" 
-              className="rounded-[50px] brightness-105 hover:scale-105 transition-transform duration-[2000ms] shadow-sm"
+              src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=1000&auto=format&fit=crop" 
+              alt="Minimalist vertical white book" 
+              className="rounded-[50px] shadow-sm"
              />
            </div>
            <div className="absolute -bottom-6 -right-6 bg-white p-8 rounded-[40px] shadow-2xl border border-gray-50 max-w-xs hidden lg:block">
@@ -174,9 +179,9 @@ const Planner: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-24 items-center">
           <div className="rounded-[40px] overflow-hidden card-shadow group transition-all duration-700 relative">
             <img 
-              src="https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=1000&auto=format&fit=crop" 
+              src="https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?q=80&w=1000&auto=format&fit=crop" 
               alt="Serene minimalist book on desk" 
-              className="w-full h-[500px] object-cover group-hover:scale-105 transition-transform duration-700"
+              className="w-full h-[500px] object-cover group-hover:scale-105 transition-transform duration-700 grayscale-[0.1]"
             />
             <div className="absolute inset-0 bg-black/5" />
           </div>

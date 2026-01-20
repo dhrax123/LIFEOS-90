@@ -3,75 +3,127 @@ import React from 'react';
 
 const WhatIs: React.FC = () => {
   return (
-    <div className="max-w-5xl mx-auto px-6 py-20 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <h1 className="text-6xl md:text-7xl serif mb-8 italic">Philosophy Over Features.</h1>
-      <p className="text-xl text-gray-400 mb-20 leading-relaxed max-w-2xl font-light">
-        Life OS 90 isn't another tool to manage your time. It's a framework to manage your attention.
-      </p>
+    <div className="max-w-4xl mx-auto px-6 py-24 animate-in fade-in duration-1000">
+      
+      {/* Header */}
+      <header className="mb-24 text-center">
+        <h1 className="text-5xl md:text-7xl serif italic mb-8">The Philosophy of Direction.</h1>
+        <p className="text-xl text-gray-400 font-light max-w-2xl mx-auto leading-relaxed italic">
+          Clarity is not a feeling. It is the result of a deliberate system.
+        </p>
+      </header>
 
       <div className="space-y-32">
-        {/* Comparison Section - Anti-Productivity */}
-        <section>
-          <h2 className="text-3xl serif italic mb-12 text-center">Choosing Less.</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="p-8 bg-white border border-gray-100 rounded-[32px] card-shadow">
-              <h3 className="font-bold text-[10px] uppercase tracking-widest text-gray-300 mb-6 italic">Notion / Digital Tools</h3>
-              <ul className="space-y-4 text-sm text-gray-500">
-                <li className="flex gap-2"><span>✕</span> Infinite distraction</li>
-                <li className="flex gap-2"><span>✕</span> Rewards "Busy Work"</li>
-                <li className="flex gap-2"><span>✕</span> Notification fatigue</li>
-                <li className="flex gap-2"><span>✕</span> Hard to see energy trends</li>
-              </ul>
-            </div>
-            <div className="p-10 bg-black text-white rounded-[40px] shadow-2xl shadow-black/20 scale-105 z-10 border border-white/10">
-              <h3 className="font-bold text-[10px] uppercase tracking-widest text-zinc-500 mb-6 italic">Life OS 90</h3>
-              <ul className="space-y-5 text-sm text-zinc-300">
-                <li className="flex gap-2"><span className="text-white font-bold">✓</span> Intentional Friction</li>
-                <li className="flex gap-2"><span className="text-white font-bold">✓</span> Rewards Deep Focus</li>
-                <li className="flex gap-2"><span className="text-white font-bold">✓</span> Zero Noise Environment</li>
-                <li className="flex gap-2"><span className="text-white font-bold">✓</span> Holistic Energy Mapping</li>
-              </ul>
-            </div>
-            <div className="p-8 bg-white border border-gray-100 rounded-[32px] card-shadow">
-              <h3 className="font-bold text-[10px] uppercase tracking-widest text-gray-300 mb-6 italic">Old School Planners</h3>
-              <ul className="space-y-4 text-sm text-gray-500">
-                <li className="flex gap-2"><span>✕</span> Rigid, dated pressure</li>
-                <li className="flex gap-2"><span>✕</span> Guilt for missing days</li>
-                <li className="flex gap-2"><span>✕</span> Purely task-oriented</li>
-                <li className="flex gap-2"><span>✕</span> No reflection archive</li>
-              </ul>
+        
+        {/* 1. How We See Life */}
+        <section className="space-y-8">
+          <h2 className="text-sm font-bold uppercase tracking-[0.4em] text-gray-300">01 / The Nature of Phases</h2>
+          <div className="grid md:grid-cols-2 gap-12 items-start">
+            <p className="literary text-2xl md:text-3xl text-gray-800 leading-snug font-light italic">
+              Life does not move at a single speed. It moves in distinct phases.
+            </p>
+            <div className="space-y-6 text-gray-500 font-light leading-relaxed">
+              <p>
+                Not every season is meant for high-speed output. Some phases require deep learning, while others are built for precise execution. 
+              </p>
+              <p>
+                When you try to force a growth phase during a recovery phase, you create friction. We believe in identifying the timing of your current chapter so you can work with it, not against it.
+              </p>
             </div>
           </div>
         </section>
 
-        <section className="grid md:grid-cols-2 gap-20 items-center">
-          <div>
-            <h2 className="text-4xl serif italic mb-8">The 90-Day Ideal</h2>
-            <p className="text-gray-500 leading-relaxed mb-8 font-light text-lg">
-              One year is a marathon. One week is a sprint. 90 days is a <strong>Season</strong>.
-              It's the psychological sweet spot—long enough to rewire your brain, short enough to stay urgent.
-            </p>
-            <div className="p-8 bg-[#FAF9F6] rounded-[32px] border border-gray-100 italic text-sm text-gray-600 leading-relaxed">
-              "We don't plan for the next 5 years. We plan for the person you are becoming this season."
+        {/* 2. The Problem We Notice */}
+        <section className="space-y-8">
+          <h2 className="text-sm font-bold uppercase tracking-[0.4em] text-gray-300">02 / The Cost of Noise</h2>
+          <div className="bg-white p-12 md:p-16 rounded-[48px] border border-gray-100 card-shadow">
+            <h3 className="text-3xl serif mb-10 italic">The Performance Pressure.</h3>
+            <div className="grid md:grid-cols-2 gap-16">
+              <div className="space-y-6">
+                <p className="text-sm font-bold uppercase tracking-widest text-black">The Always-On Weight</p>
+                <p className="text-gray-500 font-light text-sm leading-relaxed">
+                  Modern professional life creates a false sense of urgency. You are told to perform constantly, which leads to shallow decisions and mental fatigue.
+                </p>
+              </div>
+              <div className="space-y-6">
+                <p className="text-sm font-bold uppercase tracking-widest text-black">Rushed Logic</p>
+                <p className="text-gray-500 font-light text-sm leading-relaxed">
+                  When you have fifty tabs open, your choices are reactive, not considered. Most people aren't failing because of a lack of effort, but because of a lack of focus.
+                </p>
+              </div>
             </div>
           </div>
-          <div className="bg-white p-12 rounded-[48px] card-shadow relative">
-             <div className="flex flex-col gap-10">
-               <div className="flex gap-6">
-                 <div className="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center font-bold flex-shrink-0">1</div>
-                 <p className="text-sm text-gray-500"><span className="text-black font-bold block mb-1">Clarity First.</span> We help you identify what matters before you ever touch a pen.</p>
-               </div>
-               <div className="flex gap-6">
-                 <div className="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center font-bold flex-shrink-0">2</div>
-                 <p className="text-sm text-gray-500"><span className="text-black font-bold block mb-1">Awareness Second.</span> Tracking energy is more important than tracking checkboxes.</p>
-               </div>
-               <div className="flex gap-6">
-                 <div className="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center font-bold flex-shrink-0">3</div>
-                 <p className="text-sm text-gray-500"><span className="text-black font-bold block mb-1">Insight Always.</span> The system turns silent thoughts into actionable self-knowledge.</p>
-               </div>
-             </div>
+        </section>
+
+        {/* 3. Our Philosophy */}
+        <section className="space-y-8">
+          <h2 className="text-sm font-bold uppercase tracking-[0.4em] text-gray-300">03 / Core Thinking</h2>
+          <div className="space-y-12">
+            <div className="border-l-2 border-gray-100 pl-10 space-y-4">
+              <h4 className="text-xl serif italic">Timing Over Pressure.</h4>
+              <p className="text-gray-500 font-light leading-relaxed max-w-2xl">
+                Right action is dependent on the context of your season. Growth is often invisible while it is happening. We prioritize the foundation over the appearance of progress.
+              </p>
+            </div>
+            <div className="border-l-2 border-gray-100 pl-10 space-y-4">
+              <h4 className="text-xl serif italic">Structure as Freedom.</h4>
+              <p className="text-gray-500 font-light leading-relaxed max-w-2xl">
+                True flexibility comes from a known baseline. By establishing a clear daily anchor, you reduce the number of minor decisions you have to make, freeing your mind for higher-level work.
+              </p>
+            </div>
           </div>
         </section>
+
+        {/* 4. How the Product Helps */}
+        <section className="bg-black text-white p-16 md:p-24 rounded-[60px] shadow-2xl">
+          <h2 className="text-3xl md:text-4xl serif mb-12 italic">A Practical Framework.</h2>
+          <div className="grid md:grid-cols-2 gap-12">
+            <div className="space-y-4">
+              <h5 className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-500">Intentional Friction</h5>
+              <p className="text-zinc-300 font-light text-sm leading-relaxed">
+                Life OS 90 is designed to slow you down. By moving key reflections to a physical anchor, we remove the digital noise that prevents deep thought.
+              </p>
+            </div>
+            <div className="space-y-4">
+              <h5 className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-500">Structured Guidance</h5>
+              <p className="text-zinc-300 font-light text-sm leading-relaxed">
+                We provide a system to categorize your focus. This isn't generic advice; it's a template for you to apply your own context and make better decisions.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* 5. What This Is Not */}
+        <section className="text-center py-10">
+          <h2 className="text-sm font-bold uppercase tracking-[0.4em] text-gray-300 mb-12">Boundaries of the System</h2>
+          <div className="flex flex-wrap justify-center gap-10 opacity-60">
+            <div className="flex items-center gap-3">
+              <span className="text-gray-300">—</span>
+              <span className="text-xs font-bold uppercase tracking-widest">No Hustle Culture</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-gray-300">—</span>
+              <span className="text-xs font-bold uppercase tracking-widest">No Instant Motivation</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-gray-300">—</span>
+              <span className="text-xs font-bold uppercase tracking-widest">No Productivity Pressure</span>
+            </div>
+          </div>
+        </section>
+
+        {/* 6. Closing Direction */}
+        <section className="text-center pt-20 pb-10">
+          <p className="literary italic text-3xl md:text-4xl text-gray-800 font-light leading-relaxed max-w-3xl mx-auto mb-16">
+            You do not need to be faster. <br />You need to be clearer about where you are going.
+          </p>
+          <div className="flex justify-center items-center gap-4">
+             <div className="w-12 h-px bg-gray-100" />
+             <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-gray-400">Steady. Grounded. Resolved.</p>
+             <div className="w-12 h-px bg-gray-100" />
+          </div>
+        </section>
+
       </div>
     </div>
   );
