@@ -29,13 +29,13 @@ const HowItWorks: React.FC = () => {
         <Step 
           num="01" 
           icon="🧩"
-          title="Onboarding Quiz" 
-          desc="Answer a series of questions about your relationship with time, focus, and energy. We use this to generate your 'Season Baseline' and calibrate your companion app."
+          title="Onboarding Audit" 
+          desc="Answer a series of questions about your relationship with time, focus, and energy. We use this to generate your 'Season Baseline' and identify your core noise."
         />
         <Step 
           num="02" 
           icon="🎁"
-          title="Receive Your Kit" 
+          title="Order Your Kit" 
           desc="Your physical 90-day planner arrives. Take a moment to unbox, feel the paper, and read the introductory guide. This is your foundation."
         />
         <Step 
@@ -48,27 +48,27 @@ const HowItWorks: React.FC = () => {
           num="04" 
           icon="🌙"
           title="Nightly Reflection" 
-          desc="Open the app for 30 seconds. Tap your mood, tap your energy, and record one thought. No pressure to write a novel, just a pulse check."
+          desc="Open the companion tool for 30 seconds. Tap your mood, tap your energy, and record one thought. No pressure to write a novel, just a pulse check."
         />
         <Step 
           num="05" 
           icon="📉"
-          title="Weekly Insights" 
-          desc="Every Sunday, the app presents a calm summary of your patterns. 'You were most focused on mornings after a walk.' Use this to plan your next week."
+          title="The Insight Loop" 
+          desc="Every week, see a calm summary of your patterns. 'You were most focused on mornings after a walk.' Use this to plan your next week."
         />
         <Step 
           num="06" 
           icon="📖"
           title="The Season Review" 
-          desc="On Day 90, perform a guided review of your journey. Receive a beautiful digital archive of your thoughts. Archive your physical planner and start a new season."
+          desc="On Day 90, perform a guided review of your journey. Archive your physical planner and start a new season with deeper self-knowledge."
         />
       </div>
 
       <div className="mt-24 bg-black text-white p-12 rounded-[50px] text-center">
         <h2 className="text-3xl serif mb-6">Ready to start Day 01?</h2>
         <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <Link to="/planner" className="px-10 py-5 bg-white text-black rounded-full font-medium">Order Season 1 Kit</Link>
-          <Link to="/account" className="px-10 py-5 bg-zinc-800 text-white rounded-full font-medium border border-white/10">Try the Onboarding Quiz</Link>
+          <Link to="/account" className="px-10 py-5 bg-white text-black rounded-full font-bold">Start Onboarding Audit</Link>
+          <Link to="/planner" className="px-10 py-5 bg-zinc-800 text-white rounded-full font-medium border border-white/10">Skip to Planner</Link>
         </div>
       </div>
     </div>

@@ -5,15 +5,16 @@ import { Link } from 'react-router-dom';
 
 const Account: React.FC = () => {
   const [step, setStep] = useState(0);
-  const [formData, setFormData] = useState({ name: '', role: '', struggle: '' });
+  const [formData, setFormData] = useState({ name: '', role: '', struggle: '', customRole: '' });
   const [manifest, setManifest] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const result = await generatePersonalManifest(formData);
-    setManifest(result || "Your path is unique.");
+    const roleToUse = formData.role === 'other' ? formData.customRole : formData.role;
+    const result = await generatePersonalManifest({ ...formData, role: roleToUse });
+    setManifest(result || "Your path is unique. Focus on the breath of today, and let the 90 days unfold with grace.");
     setLoading(false);
     setStep(2);
   };
@@ -21,17 +22,12 @@ const Account: React.FC = () => {
   if (step === 0) {
     return (
       <div className="max-w-md mx-auto px-6 py-32 text-center animate-in fade-in">
-        <h1 className="text-4xl serif mb-6">Your Life OS Hub</h1>
-        <p className="text-gray-500 mb-12">A private space for your reflections and insights. Calm and secure.</p>
-        <div className="space-y-4">
-          <button onClick={() => setStep(1)} className="w-full py-5 bg-black text-white rounded-2xl font-medium shadow-xl shadow-black/10 hover:bg-zinc-800 transition-colors">
-            Start My Onboarding
-          </button>
-          <button className="w-full py-5 border border-gray-200 rounded-2xl font-medium hover:bg-gray-50 text-gray-500 transition-colors">
-            Sign in to existing account
-          </button>
-        </div>
-        <p className="mt-12 text-[10px] text-gray-300 uppercase tracking-widest font-bold">Privacy First • No Data Selling</p>
+        <h1 className="text-4xl md:text-5xl serif mb-6 italic">Who are you this season?</h1>
+        <p className="text-gray-500 mb-12 font-light leading-relaxed">Before the planner arrives, we need to find your baseline. A 3-minute audit to anchor your next 90 days.</p>
+        <button onClick={() => setStep(1)} className="w-full py-5 bg-black text-white rounded-2xl font-medium shadow-xl shadow-black/10 hover:bg-zinc-800 transition-all hover:scale-[1.02]">
+          Start My Audit
+        </button>
+        <p className="mt-8 text-[10px] text-gray-300 uppercase tracking-widest font-bold">Privacy First • India Only</p>
       </div>
     );
   }
@@ -39,47 +35,54 @@ const Account: React.FC = () => {
   if (step === 1) {
     return (
       <div className="max-w-xl mx-auto px-6 py-20 animate-in slide-in-from-right-4 duration-500">
-        <h1 className="text-3xl serif mb-2 text-center">The Baseline Audit.</h1>
-        <p className="text-center text-gray-400 mb-12 text-sm">Let's understand where you are starting from.</p>
+        <h1 className="text-3xl serif mb-2 text-center italic">The Baseline Audit.</h1>
+        <p className="text-center text-gray-400 mb-12 text-sm font-light">Quiet your mind and be honest.</p>
         <form onSubmit={handleSubmit} className="space-y-10">
           <div>
-            <label className="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">Your Name</label>
+            <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 mb-4">Identity Name</label>
             <input 
               required
-              className="w-full bg-white border border-gray-100 p-5 rounded-2xl focus:outline-none focus:ring-2 focus:ring-black/5 transition-all text-lg shadow-sm"
-              placeholder="How should the OS address you?"
+              className="w-full bg-white border border-gray-100 p-6 rounded-[2rem] focus:outline-none focus:ring-2 focus:ring-black/5 transition-all text-lg shadow-sm font-light"
+              placeholder="How should we address you?"
               value={formData.name}
               onChange={e => setFormData({...formData, name: e.target.value})}
             />
           </div>
           <div>
-            <label className="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">Current Path</label>
-            <div className="grid grid-cols-2 gap-3">
-              {['student', 'creator', 'professional', 'founder'].map((r) => (
+            <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 mb-4">Current Path</label>
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              {['student', 'creator', 'founder', 'other'].map((r) => (
                 <button
                   key={r}
                   type="button"
                   onClick={() => setFormData({...formData, role: r})}
-                  className={`p-4 rounded-2xl border text-sm capitalize transition-all duration-300 flex items-center justify-center gap-2 ${
+                  className={`p-5 rounded-3xl border text-sm capitalize transition-all duration-300 flex items-center justify-center gap-2 ${
                     formData.role === r 
-                    ? 'bg-black text-white border-black scale-[1.02] shadow-md shadow-black/10' 
-                    : 'bg-white border-gray-100 hover:border-gray-300 text-gray-500'
+                    ? 'bg-black text-white border-black scale-[1.02] shadow-xl shadow-black/10' 
+                    : 'bg-white border-gray-100 hover:border-gray-200 text-gray-400 font-light'
                   }`}
                 >
-                  {r}
-                  {formData.role === r && (
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                  )}
+                  {r === 'other' ? 'Custom Path' : r}
+                  {formData.role === r && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>}
                 </button>
               ))}
             </div>
+            {formData.role === 'other' && (
+              <input 
+                required
+                className="w-full bg-white border border-gray-100 p-6 rounded-[2rem] focus:outline-none focus:ring-2 focus:ring-black/5 transition-all text-lg shadow-sm animate-in slide-in-from-top-2"
+                placeholder="Describe your role..."
+                value={formData.customRole}
+                onChange={e => setFormData({...formData, customRole: e.target.value})}
+              />
+            )}
           </div>
           <div>
-            <label className="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">Your Biggest "Noise"</label>
+            <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 mb-4">Core Noise</label>
             <textarea 
               required
-              className="w-full bg-white border border-gray-100 p-5 rounded-2xl h-40 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all text-lg shadow-sm resize-none"
-              placeholder="Is it the constant buzz of notifications? The pressure to always be 'on'? Or perhaps a lack of clear direction? Tell us what feels heaviest today..."
+              className="w-full bg-white border border-gray-100 p-6 rounded-[2rem] h-40 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all text-lg shadow-sm resize-none font-light"
+              placeholder="What feels heaviest today? The pressure to always be 'on'?"
               value={formData.struggle}
               onChange={e => setFormData({...formData, struggle: e.target.value})}
             />
@@ -87,14 +90,9 @@ const Account: React.FC = () => {
           <button 
             type="submit" 
             disabled={loading}
-            className="w-full py-5 bg-black text-white rounded-2xl font-medium disabled:opacity-50 text-lg shadow-xl shadow-black/10 hover:bg-zinc-800 transition-all active:scale-[0.98]"
+            className="w-full py-6 bg-black text-white rounded-[2rem] font-bold disabled:opacity-50 text-lg shadow-2xl shadow-black/10 hover:bg-zinc-800 transition-all active:scale-[0.98]"
           >
-            {loading ? (
-              <span className="flex items-center justify-center gap-2">
-                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                Calibrating...
-              </span>
-            ) : 'Generate My 90-Day Manifest'}
+            {loading ? 'Analyzing Baseline...' : 'Generate Identity Card'}
           </button>
         </form>
       </div>
@@ -102,58 +100,67 @@ const Account: React.FC = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-20 animate-in zoom-in-95 duration-500">
-      <div className="flex items-center justify-between mb-12">
-        <h1 className="text-3xl serif italic">Dashboard</h1>
-        <div className="flex gap-4">
-           <div className="px-3 py-1 bg-green-50 text-green-600 rounded-full text-[10px] font-bold uppercase">System Active</div>
-           <div className="text-[10px] text-gray-400 font-bold uppercase py-1">Season 01</div>
-        </div>
+    <div className="max-w-4xl mx-auto px-6 py-20 animate-in zoom-in-95 duration-700">
+      <div className="text-center mb-16">
+        <h1 className="text-4xl serif italic mb-3">Choosing Less.</h1>
+        <p className="text-gray-400 text-sm font-light">Your Season 01 Identity Card is ready for archival.</p>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-8">
-        <div className="md:col-span-2 space-y-8">
-          <div className="bg-white border border-gray-100 p-12 rounded-[40px] card-shadow relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-gray-50 via-gray-200 to-gray-50" />
-            <h2 className="text-[10px] font-bold uppercase tracking-widest text-gray-300 mb-8">Personal 90-Day Manifest</h2>
-            <div className="serif text-3xl leading-relaxed text-gray-800 italic">
-              "{manifest}"
+      <div className="flex flex-col items-center">
+        {/* The "Identity Card" - Pinterest-core Aesthetic Artifact */}
+        <div className="w-full max-w-lg bg-[#FDFCFB] border border-gray-50 p-12 rounded-[56px] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.06)] relative overflow-hidden mb-16 group soft-gradient">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gray-100 to-transparent opacity-50" />
+          
+          <div className="flex justify-between items-start mb-20">
+             <div className="flex flex-col">
+               <span className="text-[10px] font-bold text-gray-300 uppercase tracking-[0.4em] mb-1">Season 01</span>
+               <span className="text-[10px] text-gray-400 italic">Identity Fragment</span>
+             </div>
+             <div className="w-14 h-14 rounded-full border border-gray-100 flex items-center justify-center text-[10px] font-bold text-gray-200 italic bg-white shadow-sm">OS90</div>
+          </div>
+          
+          <div className="serif text-3xl leading-relaxed text-gray-800 italic mb-20 pr-4">
+            "This season, you are becoming..."
+            <p className="text-base font-light text-gray-500 mt-6 not-italic leading-relaxed">
+              {manifest}
+            </p>
+          </div>
+          
+          <div className="flex justify-between items-end pt-10 border-t border-gray-100/50">
+            <div>
+              <p className="text-[9px] font-bold text-gray-300 uppercase tracking-[0.3em] mb-2">Subject</p>
+              <p className="text-sm font-medium text-gray-700">{formData.name}</p>
+            </div>
+            <div className="text-right">
+              <p className="text-[9px] font-bold text-gray-300 uppercase tracking-[0.3em] mb-2">Core Path</p>
+              <p className="text-sm font-medium text-gray-700 capitalize">
+                {formData.role === 'other' ? formData.customRole : formData.role}
+              </p>
             </div>
           </div>
           
-          <div className="grid grid-cols-2 gap-6">
-            <div className="p-8 bg-white border border-gray-100 rounded-3xl">
-              <h4 className="text-[10px] font-bold uppercase tracking-widest text-gray-300 mb-4">Mood Average</h4>
-              <p className="text-2xl font-medium">Calm • 🌱</p>
-            </div>
-            <div className="p-8 bg-white border border-gray-100 rounded-3xl">
-              <h4 className="text-[10px] font-bold uppercase tracking-widest text-gray-300 mb-4">Focus Peak</h4>
-              <p className="text-2xl font-medium">09:00 — 11:30</p>
-            </div>
+          <div className="absolute inset-x-0 bottom-4 flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
+            <span className="text-[8px] text-gray-300 uppercase tracking-[0.5em] font-bold">Screenshot to save your manifest</span>
           </div>
         </div>
-
-        <div className="space-y-8">
-           <div className="bg-black text-white p-8 rounded-[3rem] text-center">
-              <h4 className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-6">Current Progress</h4>
-              <div className="relative w-32 h-32 mx-auto mb-6">
-                <svg className="w-full h-full transform -rotate-90">
-                  <circle cx="64" cy="64" r="58" stroke="currentColor" strokeWidth="8" fill="transparent" className="text-zinc-800" />
-                  <circle cx="64" cy="64" r="58" stroke="currentColor" strokeWidth="8" fill="transparent" strokeDasharray="364.4" strokeDashoffset="360" className="text-white" />
-                </svg>
-                <div className="absolute inset-0 flex items-center justify-center text-2xl serif">Day 01</div>
-              </div>
-              <p className="text-xs text-gray-400">89 days remaining in <br />Season 1</p>
-           </div>
-           
-           <div className="p-8 border border-gray-100 rounded-3xl">
-             <h4 className="text-[10px] font-bold uppercase tracking-widest text-gray-300 mb-4">Quick Links</h4>
-             <ul className="space-y-3 text-sm font-medium">
-               <li><Link to="/journal" className="hover:text-black">Reflection History</Link></li>
-               <li><Link to="/planner" className="hover:text-black">Order Next Planner</Link></li>
-               <li><a href="#" className="hover:text-black">Export Season Data</a></li>
-             </ul>
-           </div>
+        
+        {/* Post-Audit CTA */}
+        <div className="w-full max-w-lg p-12 bg-black text-white rounded-[48px] text-center shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-16 -mt-16 blur-3xl" />
+          <h3 className="text-3xl serif mb-4 italic relative z-10">Anchor Your Identity.</h3>
+          <p className="text-gray-400 mb-10 text-sm leading-relaxed font-light relative z-10">
+            Your Identity Card is the software. Now you need the hardware. Your 180-page anchor ships in a hand-woven basket with ritual silk and candles.
+          </p>
+          <Link 
+            to="/planner" 
+            className="inline-block w-full py-6 bg-white text-black rounded-full font-bold text-xl hover:scale-[1.03] transition-transform active:scale-95 shadow-xl relative z-10"
+          >
+            Claim My Season Kit — Buy Now
+          </Link>
+          <div className="mt-8 flex items-center justify-center gap-3 relative z-10">
+             <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+             <p className="text-[10px] text-gray-500 uppercase tracking-[0.3em] font-bold">Batch 04 India Shipments Active</p>
+          </div>
         </div>
       </div>
     </div>
