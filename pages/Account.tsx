@@ -9,9 +9,6 @@ const Account: React.FC = () => {
   const queryParams = new URLSearchParams(location.search);
   const autoStart = queryParams.get('autoStart') === 'true';
 
-  // Step 0: Hero Intro
-  // Step 1: Configuration Form
-  // Step 2: Synthesis Results
   const [step, setStep] = useState(autoStart ? 1 : 0);
   const [formData, setFormData] = useState({ name: '', role: '', struggle: '', customRole: '' });
   
@@ -31,7 +28,6 @@ const Account: React.FC = () => {
     "Your baseline is solid. Trust it."
   ];
 
-  // If the user lands with autoStart, force them into the configuration form immediately
   useEffect(() => {
     if (autoStart) {
       setStep(1);

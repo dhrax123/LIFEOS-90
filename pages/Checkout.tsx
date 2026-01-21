@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Link, useNavigate, useBlocker, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useBlocker } from 'react-router-dom';
 
 const PaymentOption = ({ id, label, selected, onSelect }: { id: string, label: string, selected: boolean, onSelect: (id: string) => void }) => (
   <button
@@ -28,38 +28,31 @@ const ExitIntentModal = ({ blocker }: { blocker: any }) => {
     <div className="fixed inset-0 z-[200] flex items-center justify-center p-6 animate-in fade-in duration-500">
       <div className="absolute inset-0 bg-[#FAF9F6]/80 backdrop-blur-md" />
       <div className="relative w-full max-w-sm bg-white p-12 rounded-[50px] shadow-2xl border border-gray-100 text-center animate-in zoom-in-95 duration-500">
-        {/* Sprout Icon Container */}
-        <div className="w-16 h-16 bg-[#FAF9F6] rounded-full mx-auto mb-10 flex items-center justify-center text-2xl shadow-inner border border-white">
-          <span className="animate-bounce">🌱</span>
-        </div>
-        
+        <div className="w-16 h-16 bg-[#FAF9F6] rounded-full mx-auto mb-8 flex items-center justify-center text-2xl">🌱</div>
         <h2 className="text-3xl serif italic mb-6">Pause for a moment.</h2>
-        <p className="text-gray-500 font-light leading-relaxed mb-10 text-sm px-4">
+        <p className="text-gray-500 font-light leading-relaxed mb-10 text-sm">
           Do you want to get a free audit to understand what this does before you commit?
         </p>
-        
-        <div className="space-y-6">
+        <div className="space-y-4">
           <button 
             onClick={() => {
-              // Reset blocker state so we can navigate
+              // ALWAYS lead to the audit experience
               blocker.reset();
-              // Navigate to account with autoStart=true to trigger immediate input screen
               navigate('/account?autoStart=true');
             }}
-            className="w-full py-5 bg-black text-white rounded-full font-bold text-base hover:scale-[1.02] transition-transform active:scale-95 shadow-lg shadow-black/10"
+            className="w-full py-5 bg-black text-white rounded-full font-bold text-base hover:scale-[1.02] transition-transform active:scale-95"
           >
             Yes, begin my audit
           </button>
-          
           <button 
             onClick={() => {
-              // Allow navigation to Home
+              // Explicitly move away to Home without friction
               blocker.reset();
               navigate('/');
             }}
-            className="w-full py-2 text-gray-400 text-[10px] font-bold uppercase tracking-[0.4em] hover:text-black transition-colors block"
+            className="w-full py-4 text-gray-300 text-[10px] font-bold uppercase tracking-[0.3em] hover:text-black transition-colors"
           >
-            NO, TAKE ME BACK
+            No, take me back
           </button>
         </div>
       </div>
@@ -70,36 +63,11 @@ const ExitIntentModal = ({ blocker }: { blocker: any }) => {
 const Checkout: React.FC = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('upi');
-  const location = useLocation();
 
-  /**
-   * NAVIGATION BLOCKER LOGIC
-   * 
-   * We block navigation away from /checkout unless:
-   * 1. The order was successful.
-   * 2. The destination is explicitly Home ('/') or the Audit with autoStart.
-   *    This allows our modal buttons to function without re-blocking.
-   */
+  // Navigation Blocker: Intercepts when user tries to leave checkout via Back or links
   const blocker = useBlocker(
-    ({ nextLocation }) => {
-      // If payment was a success, let them go anywhere (e.g., to Home via success screen)
-      if (isSuccess) return false;
-      
-      // If we are already on the target page, no need to block
-      if (nextLocation.pathname === location.pathname) return false;
-
-      // EXCEPTION: If the next destination is Home or Audit with autoStart, 
-      // it means the user clicked the modal buttons. Allow it.
-      const isNavigatingToHome = nextLocation.pathname === '/';
-      const isNavigatingToAuditStart = nextLocation.pathname === '/account' && nextLocation.search.includes('autoStart=true');
-      
-      if (isNavigatingToHome || isNavigatingToAuditStart) {
-        return false;
-      }
-
-      // Otherwise, block (this catches browser 'Back' button and nav links)
-      return true;
-    }
+    ({ currentLocation, nextLocation }) =>
+      !isSuccess && currentLocation.pathname !== nextLocation.pathname
   );
 
   if (isSuccess) {
