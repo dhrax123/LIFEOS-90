@@ -6,7 +6,7 @@ const About: React.FC = () => {
     <div className="max-w-4xl mx-auto px-6 py-24 animate-in fade-in duration-700">
       <div className="mb-20 text-center">
         <h1 className="text-6xl serif mb-6 italic">Built for humans, <br />not users.</h1>
-        <p className="text-xl text-gray-500 font-light">The story behind Life OS 90.</p>
+        <p className="text-xl text-gray-500 font-light">The story behind Linen Logic.</p>
       </div>
 
       <div className="prose prose-lg text-gray-600 space-y-12 leading-relaxed max-w-none">
@@ -16,7 +16,7 @@ const About: React.FC = () => {
             All it led to was a higher-functioning version of burnout.
           </p>
           <p className="mt-8">
-            Life OS 90 was born from a simple realization: <strong>Productivity is the byproduct of clarity, not the goal.</strong> 
+            Linen Logic was born from a simple realization: <strong>Productivity is the byproduct of clarity, not the goal.</strong> 
             If you don't know who you are and what you care about, "doing more" just gets you lost faster. 
           </p>
         </section>
@@ -49,7 +49,7 @@ const About: React.FC = () => {
             "We built this for ourselves first. For the founders who felt like bottlenecks, for the students who felt like numbers, 
             and for the creators who felt like machines. We hope it helps you find your breath again."
           </p>
-          <p className="mt-6 font-bold text-xs uppercase tracking-widest text-gray-400">— Siddharth, Founder of Life OS 90</p>
+          <p className="mt-6 font-bold text-xs uppercase tracking-widest text-gray-400">— Siddharth, Founder of Linen Logic</p>
         </section>
       </div>
     </div>

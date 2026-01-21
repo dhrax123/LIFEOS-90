@@ -37,11 +37,11 @@ const CheckoutDrawer = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => v
 
         <div className="flex-grow">
           <div className="flex gap-5 items-start p-5 bg-[#FAF9F6] rounded-[2rem] border border-gray-100 mb-8">
-            <div className="w-20 h-24 bg-gray-200 rounded-2xl overflow-hidden flex-shrink-0 shadow-sm">
-               <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=400&auto=format&fit=crop" className="w-full h-full object-cover" alt="Season 1 Kit" />
+            <div className="w-20 h-24 bg-white rounded-2xl overflow-hidden flex-shrink-0 shadow-sm border border-gray-50">
+               <img src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=400&auto=format&fit=crop" className="w-full h-full object-cover grayscale" alt="Season 1 Kit" />
             </div>
             <div className="py-1">
-              <h4 className="font-bold text-[10px] uppercase tracking-widest mb-1">Life OS 90: Season 1</h4>
+              <h4 className="font-bold text-[10px] uppercase tracking-widest mb-1">Linen Logic: Season 1</h4>
               <p className="text-xs text-gray-400 mb-3 leading-tight">180-page Planner + Ritual Kit</p>
               <p className="text-lg font-medium text-black">$19.00</p>
             </div>
@@ -94,7 +94,7 @@ const Planner: React.FC = () => {
           <div className="inline-block px-4 py-1 bg-gray-100 rounded-full text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-6 italic">Batch 04 • India Exclusive</div>
           <h1 className="text-5xl md:text-7xl serif mb-6 italic leading-tight">Nothing Glossy. <br />Nothing Loud.</h1>
           <p className="text-lg text-gray-500 mb-8 leading-relaxed font-light">
-            Life OS 90 is a physical weight in your hand. Designed to slow you down, it replaces the digital buzz with the tactile reality of 180 pages, scented candles, and focused reflection.
+            Linen Logic is a physical weight in your hand. Designed to slow you down, it replaces the digital buzz with the tactile reality of 180 pages, scented candles, and focused reflection.
           </p>
           
           <div className="flex items-center space-x-6 mb-10 p-6 bg-white rounded-[32px] border border-gray-100 card-shadow inline-flex">
@@ -116,12 +116,12 @@ const Planner: React.FC = () => {
           </button>
         </div>
         
-        <div className="relative">
-           <div className="bg-[#F5F3EF] rounded-[60px] p-6 card-shadow overflow-hidden">
+        <div className="relative flex justify-end">
+           <div className="bg-[#F5F3EF] rounded-[60px] p-8 card-shadow overflow-hidden max-w-lg">
              <img 
-              src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=1000&auto=format&fit=crop" 
-              alt="Minimalist vertical white book" 
-              className="rounded-[50px] shadow-sm"
+              src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=1200&auto=format&fit=crop" 
+              alt="Linen Logic Planner Cover Texture" 
+              className="rounded-[40px] shadow-sm w-full h-auto object-cover grayscale-[0.2]"
              />
            </div>
            <div className="absolute -bottom-6 -right-6 bg-white p-8 rounded-[40px] shadow-2xl border border-gray-50 max-w-xs hidden lg:block">
@@ -153,7 +153,7 @@ const Planner: React.FC = () => {
             <div className="text-center group">
               <div className="w-24 h-24 bg-[#FAF9F6] rounded-full mx-auto mb-8 flex items-center justify-center text-4xl group-hover:scale-110 transition-transform shadow-sm">🧺</div>
               <h4 className="font-bold text-[10px] uppercase tracking-[0.2em] mb-3">Woven Basket</h4>
-              <p className="text-xs text-gray-400 leading-relaxed px-6 font-light">Your OS arrives in a hand-woven minimalist basket, yours to keep as a permanent desk anchor for your seasonal tools.</p>
+              <p className="text-xs text-gray-400 leading-relaxed px-6 font-light">Your kit arrives in a hand-woven minimalist basket, yours to keep as a permanent desk anchor for your seasonal tools.</p>
             </div>
             <div className="text-center group">
               <div className="w-24 h-24 bg-[#FAF9F6] rounded-full mx-auto mb-8 flex items-center justify-center text-4xl group-hover:scale-110 transition-transform shadow-sm">📓</div>
@@ -241,7 +241,7 @@ const Planner: React.FC = () => {
             />
             <FAQItem 
               q="Refunds or replacements?" 
-              a="If your ribbon is frayed or the candle is cracked, we replace it instantly. If the OS doesn't feel like the 'anchor' you needed, we offer a 14-day calm refund." 
+              a="If your ribbon is frayed or the candle is cracked, we replace it instantly. If the kit doesn't feel like the 'anchor' you needed, we offer a 14-day calm refund." 
             />
           </div>
         </div>

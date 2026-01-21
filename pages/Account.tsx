@@ -1,10 +1,15 @@
 
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { generatePersonalManifestStream } from '../geminiService';
 import { Link } from 'react-router-dom';
 
 const Account: React.FC = () => {
-  const [step, setStep] = useState(0);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const autoStart = queryParams.get('autoStart') === 'true';
+
+  const [step, setStep] = useState(autoStart ? 1 : 0);
   const [formData, setFormData] = useState({ name: '', role: '', struggle: '', customRole: '' });
   
   const [isThinking, setIsThinking] = useState(false);
@@ -22,6 +27,12 @@ const Account: React.FC = () => {
     "This part is quieter. That's a good thing.",
     "Your baseline is solid. Trust it."
   ];
+
+  useEffect(() => {
+    if (autoStart) {
+      setStep(1);
+    }
+  }, [autoStart]);
 
   const handleAuditSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -144,7 +155,7 @@ const Account: React.FC = () => {
       <div className="w-full max-w-sm bg-white p-12 md:p-14 rounded-[40px] border border-gray-100 manifest-glow relative min-h-[420px] flex items-center justify-center">
         
         {/* Subtle Marker */}
-        <div className="absolute top-10 right-10 text-[8px] font-bold text-gray-200 uppercase tracking-[0.5em] italic select-none">OS90/S1</div>
+        <div className="absolute top-10 right-10 text-[8px] font-bold text-gray-200 uppercase tracking-[0.5em] italic select-none">LL/S1</div>
 
         <div className="w-full">
           {isThinking ? (

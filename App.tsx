@@ -1,6 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
-import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { 
+  createHashRouter, 
+  RouterProvider, 
+  Outlet, 
+  Link, 
+  useLocation 
+} from 'react-router-dom';
 import { Icons } from './constants';
 import Home from './pages/Home';
 import WhatIs from './pages/WhatIs';
@@ -12,11 +18,14 @@ import About from './pages/About';
 import Account from './pages/Account';
 import Checkout from './pages/Checkout';
 
-const ScrollToTop = () => {
+// A small component to handle location-based logic inside the router context
+const RouteWatcher: React.FC = () => {
   const { pathname } = useLocation();
+  
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [pathname]);
+
   return null;
 };
 
@@ -31,7 +40,7 @@ const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         <Link to="/" className="text-xl font-medium tracking-tight hover:opacity-70 transition-opacity flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-black animate-pulse" />
-          Life OS <span className="text-gray-400">90</span>
+          Linen Logic <span className="text-gray-400">S1</span>
         </Link>
         
         <div className="hidden md:flex items-center space-x-10 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">
@@ -65,7 +74,7 @@ const Footer: React.FC = () => (
     <div className="max-w-7xl mx-auto px-6">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-20 mb-20">
         <div className="col-span-1 md:col-span-2">
-          <h2 className="text-3xl serif mb-8 italic">Life OS 90</h2>
+          <h2 className="text-3xl serif mb-8 italic">Linen Logic</h2>
           <p className="text-gray-400 max-w-sm leading-relaxed mb-8 font-light text-lg">
             A system for clarity in a world of infinite noise. Built for the intentional few.
           </p>
@@ -86,42 +95,52 @@ const Footer: React.FC = () => (
           <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-300 mb-8">Access</h4>
           <ul className="space-y-4 text-sm text-gray-500 font-light">
             <li><Link to="/about" className="hover:text-black transition-colors">About Us</Link></li>
-            <li><a href="mailto:hello@lifeos90.com" className="hover:text-black transition-colors">Privacy Policy</a></li>
+            <li><a href="mailto:hello@linenlogic.com" className="hover:text-black transition-colors">Privacy Policy</a></li>
             <li><span className="text-green-600 font-bold tracking-widest">BATCH 04 LIVE</span></li>
           </ul>
         </div>
       </div>
       <div className="pt-10 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center text-[10px] text-gray-300 font-bold uppercase tracking-[0.3em]">
-        <p>© {new Date().getFullYear()} Life OS 90. India Domestic Fulfillment.</p>
+        <p>© {new Date().getFullYear()} Linen Logic. India Domestic Fulfillment.</p>
         <p className="mt-4 md:mt-0">Calm is the ultimate luxury.</p>
       </div>
     </div>
   </footer>
 );
 
-const App: React.FC = () => {
+const RootLayout: React.FC = () => {
   return (
-    <Router>
-      <ScrollToTop />
-      <div className="min-h-screen flex flex-col pt-20">
-        <Navbar />
-        <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/what-is" element={<WhatIs />} />
-            <Route path="/how-it-works" element={<HowItWorks />} />
-            <Route path="/features" element={<Features />} />
-            <Route path="/planner" element={<Planner />} />
-            <Route path="/who-its-for" element={<WhoItsFor />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/account" element={<Account />} />
-            <Route path="/checkout" element={<Checkout />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
-    </Router>
+    <div className="min-h-screen flex flex-col pt-20">
+      <RouteWatcher />
+      <Navbar />
+      <main className="flex-grow">
+        <Outlet />
+      </main>
+      <Footer />
+    </div>
   );
+};
+
+const router = createHashRouter([
+  {
+    path: "/",
+    element: <RootLayout />,
+    children: [
+      { index: true, element: <Home /> },
+      { path: "what-is", element: <WhatIs /> },
+      { path: "how-it-works", element: <HowItWorks /> },
+      { path: "features", element: <Features /> },
+      { path: "planner", element: <Planner /> },
+      { path: "who-its-for", element: <WhoItsFor /> },
+      { path: "about", element: <About /> },
+      { path: "account", element: <Account /> },
+      { path: "checkout", element: <Checkout /> },
+    ],
+  },
+]);
+
+const App: React.FC = () => {
+  return <RouterProvider router={router} />;
 };
 
 export default App;

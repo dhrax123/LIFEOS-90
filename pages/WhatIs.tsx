@@ -81,7 +81,7 @@ const WhatIs: React.FC = () => {
             <div className="space-y-4">
               <h5 className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-500">Intentional Friction</h5>
               <p className="text-zinc-300 font-light text-sm leading-relaxed">
-                Life OS 90 is designed to slow you down. By moving key reflections to a physical anchor, we remove the digital noise that prevents deep thought.
+                Linen Logic is designed to slow you down. By moving key reflections to a physical anchor, we remove the digital noise that prevents deep thought.
               </p>
             </div>
             <div className="space-y-4">

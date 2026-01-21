@@ -15,7 +15,7 @@ const Home: React.FC = () => {
           <span className="italic text-gray-400">adapts to you.</span>
         </h1>
         <p className="text-xl md:text-2xl text-gray-500 max-w-2xl mx-auto mb-12 leading-relaxed font-light">
-          Clarity shouldn't be a chore. Life OS 90 is a calm, 90-day framework to reclaim your attention for just $19.
+          Clarity shouldn't be a chore. Linen Logic is a calm, 90-day framework to reclaim your attention for just $19.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
           <Link to="/account" className="w-full sm:w-auto px-10 py-5 bg-black text-white rounded-full font-medium hover:scale-105 transition-all shadow-xl shadow-black/10">
@@ -76,7 +76,7 @@ const Home: React.FC = () => {
             </div>
           </div>
           <div className="bg-[#F5F3EF] p-16 rounded-[60px] card-shadow">
-            <h3 className="text-2xl serif mb-8 italic">Life OS 90 is NOT:</h3>
+            <h3 className="text-2xl serif mb-8 italic">Linen Logic is NOT:</h3>
             <ul className="space-y-6">
               <li className="flex items-center gap-4 text-gray-600 font-light">
                 <span className="text-gray-300 font-bold">—</span> A way to do more work
