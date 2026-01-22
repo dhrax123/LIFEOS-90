@@ -1,7 +1,8 @@
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
+// Re-usable FAQ component for the planner page
 const FAQItem = ({ q, a }: { q: string, a: string }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
@@ -18,76 +19,10 @@ const FAQItem = ({ q, a }: { q: string, a: string }) => {
   );
 };
 
-const CheckoutDrawer = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => {
-  const navigate = useNavigate();
-  if (!isOpen) return null;
-  return (
-    <div className="fixed inset-0 z-[100] overflow-hidden">
-      <div className="absolute inset-0 bg-black/10 backdrop-blur-[2px]" onClick={onClose} />
-      <div className="absolute right-0 top-0 h-full w-full max-w-sm bg-white shadow-[-20px_0_60px_-15px_rgba(0,0,0,0.1)] animate-in slide-in-from-right duration-500 p-8 flex flex-col">
-        <div className="flex justify-between items-center mb-12">
-          <div className="flex flex-col">
-            <h2 className="text-2xl serif italic">Your Kit</h2>
-            <span className="text-[10px] font-bold text-gray-300 uppercase tracking-widest">Secured for Batch 04</span>
-          </div>
-          <button onClick={onClose} className="p-2 hover:bg-gray-50 rounded-full transition-colors group">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="group-hover:rotate-90 transition-transform"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-          </button>
-        </div>
-
-        <div className="flex-grow">
-          <div className="flex gap-5 items-start p-5 bg-[#FAF9F6] rounded-[2rem] border border-gray-100 mb-8">
-            <div className="w-20 h-24 bg-white rounded-2xl overflow-hidden flex-shrink-0 shadow-sm border border-gray-50">
-               <img src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=400&auto=format&fit=crop" className="w-full h-full object-cover grayscale" alt="Season 1 Kit" />
-            </div>
-            <div className="py-1">
-              <h4 className="font-bold text-[10px] uppercase tracking-widest mb-1">Linen Logic: Season 1</h4>
-              <p className="text-xs text-gray-400 mb-3 leading-tight">180-page Planner + Ritual Kit</p>
-              <p className="text-lg font-medium text-black">$19.00</p>
-            </div>
-          </div>
-
-          <div className="space-y-4 px-2">
-            <div className="flex justify-between text-xs">
-              <span className="text-gray-400">Seasonal Bundle</span>
-              <span>$19.00</span>
-            </div>
-            <div className="flex justify-between text-xs">
-              <span className="text-gray-400">Tier-1 India Shipping</span>
-              <span className="text-green-600 font-medium">COMPLIMENTARY</span>
-            </div>
-            <div className="pt-6 border-t border-gray-100 flex justify-between font-bold text-lg">
-              <span>Total</span>
-              <span>$19.00</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="space-y-4">
-          <button 
-            onClick={() => navigate('/checkout')}
-            className="w-full py-5 bg-black text-white rounded-full font-bold text-lg hover:bg-zinc-800 transition-all shadow-xl shadow-black/10 active:scale-[0.98]"
-          >
-            Checkout in India
-          </button>
-          <div className="flex items-center justify-center gap-2 opacity-30">
-             <div className="w-1 h-1 rounded-full bg-black" />
-             <p className="text-[8px] text-center text-black uppercase tracking-[0.3em] font-bold">Encrypted Checkout</p>
-             <div className="w-1 h-1 rounded-full bg-black" />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
+// Main Planner page component showing physical product details
 const Planner: React.FC = () => {
-  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
-
   return (
     <div className="animate-in fade-in duration-1000">
-      <CheckoutDrawer isOpen={isCheckoutOpen} onClose={() => setIsCheckoutOpen(false)} />
-
       {/* Hero: The Aesthetic Object */}
       <section className="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-20 items-center">
         <div className="animate-in slide-in-from-left-4 duration-1000">
@@ -108,12 +43,12 @@ const Planner: React.FC = () => {
             </div>
           </div>
           
-          <button 
-            onClick={() => setIsCheckoutOpen(true)}
-            className="w-full md:w-auto px-12 py-5 bg-black text-white rounded-full font-bold text-lg hover:scale-[1.02] active:scale-95 hover:bg-zinc-800 transition-all duration-300 shadow-xl shadow-black/20"
+          <Link 
+            to="/checkout"
+            className="w-full md:w-auto px-12 py-5 bg-black text-white rounded-full font-bold text-lg hover:scale-[1.02] active:scale-95 hover:bg-zinc-800 transition-all duration-300 shadow-xl shadow-black/20 inline-block text-center"
           >
-            Secure Season 1 Kit
-          </button>
+             Secure Season 1 Kit
+          </Link>
         </div>
         
         <div className="relative flex justify-end">
@@ -201,61 +136,43 @@ const Planner: React.FC = () => {
       {/* FAQ Section */}
       <section className="py-32 max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-20 items-start">
         <div className="bg-black text-white p-16 rounded-[60px] shadow-2xl">
-          <h2 className="text-3xl md:text-4xl serif mb-10 italic">This is NOT for you if...</h2>
-          <ul className="space-y-10">
-            <li className="flex gap-6">
-              <span className="text-zinc-600 text-2xl font-bold">—</span>
-              <div>
-                <h4 className="font-bold text-[10px] uppercase tracking-[0.2em] text-zinc-500 mb-2">Hustle Culture Loyalists</h4>
-                <p className="text-zinc-400 text-sm leading-relaxed font-light">If your goal is to "crush" your day and track 50 tasks, the intentional friction of paper will frustrate you.</p>
-              </div>
-            </li>
-            <li className="flex gap-6">
-              <span className="text-zinc-600 text-2xl font-bold">—</span>
-              <div>
-                <h4 className="font-bold text-[10px] uppercase tracking-[0.2em] text-zinc-500 mb-2">Life Hackers</h4>
-                <p className="text-zinc-400 text-sm leading-relaxed font-light">We don't do "hacks". We do seasons. If you want results in 7 days, look elsewhere. We build for 90-day cycles.</p>
-              </div>
-            </li>
-          </ul>
-        </div>
-        
-        <div className="py-10">
-          <h2 className="text-3xl serif mb-12 italic">India-Only Support.</h2>
-          <div className="space-y-2">
-            <FAQItem 
-              q="Shipping timeline (Bangalore/Mumbai/Delhi)?" 
-              a="We offer guaranteed 3-5 day express delivery to all Tier-1 Indian cities. Your basket is hand-packed in Bangalore and shipped with carbon-neutral logistics." 
-            />
-            <FAQItem 
-              q="Paper weight and texture?" 
-              a="120 GSM Italian cream paper. It has a slight 'tooth' to it, making it satisfying for fountain pens and pencils alike. Zero bleed, maximum tactile feedback." 
-            />
-            <FAQItem 
-              q="Is the digital companion mandatory?" 
-              a="Optional. The planner works perfectly on its own. The app is a quiet space to see long-term patterns once a week." 
-            />
-            <FAQItem 
-              q="What happens after 90 days?" 
-              a="You archive your book—a tactile record of your season. You can then order a Season 02 kit for the next chapter." 
-            />
-            <FAQItem 
-              q="Refunds or replacements?" 
-              a="If your ribbon is frayed or the candle is cracked, we replace it instantly. If the kit doesn't feel like the 'anchor' you needed, we offer a 14-day calm refund." 
-            />
+          <h2 className="text-3xl serif mb-10 italic">Common Queries.</h2>
+          <div className="space-y-4">
+            <div className="p-6 bg-zinc-900 rounded-3xl border border-white/5">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] mb-2 text-zinc-500">Shipping</p>
+              <p className="text-sm font-light leading-relaxed">We ship across India. Tier-1 cities usually receive the kit within 48-72 hours.</p>
+            </div>
+            <div className="p-6 bg-zinc-900 rounded-3xl border border-white/5">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] mb-2 text-zinc-500">The Method</p>
+              <p className="text-sm font-light leading-relaxed">It's a 90-day cycle. We believe 3 months is the perfect duration to build a baseline of clarity without feeling like a lifetime commitment.</p>
+            </div>
           </div>
         </div>
+        <div className="space-y-2">
+          <FAQItem 
+            q="Is there a digital version?" 
+            a="We provide a companion web app for reflection tracking, but the core system is physical. The goal is to move you away from screens, not give you another one to stare at."
+          />
+          <FAQItem 
+            q="What if I miss a day?" 
+            a="There are no streaks or penalties. Linen Logic is a system for clarity, not a productivity chore. Just pick up where you left off. The pages are undated."
+          />
+          <FAQItem 
+            q="Why $19 (approx ₹1,599)?" 
+            a="We source premium linen, 120gsm sustainable paper, and hand-poured candles from local artisans in India. This price allows us to maintain high quality and pay fair wages while keeping the system accessible."
+          />
+        </div>
       </section>
-
-      {/* Final Conversion */}
+      
+      {/* Final Batch Drive */}
       <section className="py-40 text-center bg-[#FAF9F6] border-t border-gray-100">
         <h2 className="text-5xl md:text-7xl serif italic mb-12">Commit to the Season.</h2>
-        <button 
-          onClick={() => setIsCheckoutOpen(true)}
-          className="px-16 py-7 bg-black text-white rounded-full font-bold text-xl hover:scale-105 transition-all shadow-2xl active:scale-95"
+        <Link 
+          to="/checkout"
+          className="px-16 py-7 bg-black text-white rounded-full font-bold text-xl hover:scale-105 transition-all shadow-2xl active:scale-95 inline-block"
         >
           Order Season 1 Kit — $19
-        </button>
+        </Link>
         <p className="mt-8 text-[10px] text-gray-400 uppercase tracking-[0.4em] font-bold">BATCH 04 IS 85% SOLD OUT IN INDIA</p>
       </section>
     </div>

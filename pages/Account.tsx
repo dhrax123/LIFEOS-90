@@ -1,14 +1,16 @@
 
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { generatePersonalManifestStream } from '../geminiService';
-import { Link } from 'react-router-dom';
 
 const Account: React.FC = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const autoStart = queryParams.get('autoStart') === 'true';
 
+  // Step 0: Hero Intro
+  // Step 1: Configuration Form
+  // Step 2: Synthesis Results
   const [step, setStep] = useState(autoStart ? 1 : 0);
   const [formData, setFormData] = useState({ name: '', role: '', struggle: '', customRole: '' });
   
@@ -28,6 +30,7 @@ const Account: React.FC = () => {
     "Your baseline is solid. Trust it."
   ];
 
+  // If the user lands with autoStart, force them into the configuration form immediately
   useEffect(() => {
     if (autoStart) {
       setStep(1);
@@ -189,7 +192,7 @@ const Account: React.FC = () => {
       {showCTA && (
         <div className="mt-16 text-center animate-in slide-in-from-bottom-8 duration-1000">
           <Link 
-            to="/planner" 
+            to="/checkout"
             className="inline-block px-12 py-5 bg-black text-white rounded-full font-bold text-lg hover:scale-[1.03] transition-transform active:scale-95 shadow-xl shadow-black/5"
           >
             Claim My Season Kit — $19
