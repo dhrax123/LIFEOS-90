@@ -43,13 +43,20 @@ const About: React.FC = () => {
           </div>
         </section>
 
-        <section className="text-center py-12">
-          <h2 className="text-2xl serif mb-4">Founder's Note</h2>
-          <p className="italic text-gray-500 max-w-2xl mx-auto">
-            "We built this for ourselves first. For the founders who felt like bottlenecks, for the students who felt like numbers, 
-            and for the creators who felt like machines. We hope it helps you find your breath again."
-          </p>
-          <p className="mt-6 font-bold text-xs uppercase tracking-widest text-gray-400">— Siddharth, Founder of Linen Logic</p>
+        <section className="text-center py-20 border-t border-gray-100 mt-20">
+          <div className="mb-12 flex justify-center">
+             <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center text-white text-xl shadow-lg">DK</div>
+          </div>
+          <h2 className="text-3xl serif mb-10 italic">A Note from Dhiraj.</h2>
+          <div className="relative">
+            <div className="absolute -top-10 -left-10 text-9xl text-gray-50 opacity-50 serif italic pointer-events-none select-none">"</div>
+            <p className="literary italic text-2xl md:text-3xl text-gray-700 max-w-3xl mx-auto leading-relaxed relative z-10 font-light">
+              Linen Logic isn’t just paper and wax—it’s a rebellion against the scroll. We spent too long living in the cloud while our real lives stayed on the ground, disconnected. 
+              This system is my personal map back to the present. A way to build without burning out, and to dream without drowning in data. 
+              We don't need faster tools; we need quieter ones. It’s time we reclaim our attention. It’s time we breathe again.
+            </p>
+          </div>
+          <p className="mt-16 font-bold text-[10px] uppercase tracking-[0.5em] text-gray-300">— Dhiraj Kumar, Founder of Linen Logic</p>
         </section>
       </div>
     </div>

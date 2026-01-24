@@ -96,7 +96,7 @@ const Footer: React.FC = () => (
           <ul className="space-y-4 text-sm text-gray-500 font-light">
             <li><Link to="/about" className="hover:text-black transition-colors">About Us</Link></li>
             <li><a href="mailto:hello@linenlogic.com" className="hover:text-black transition-colors">Privacy Policy</a></li>
-            <li><span className="text-green-600 font-bold tracking-widest">BATCH 04 LIVE</span></li>
+            <li><Link to="/checkout" className="text-green-600 font-bold tracking-widest hover:underline">BATCH 04 LIVE</Link></li>
           </ul>
         </div>
       </div>
