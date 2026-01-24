@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Link, useNavigate, useBlocker, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useBlocker } from 'react-router-dom';
 
 const PaymentOption = ({ id, label, selected, onSelect }: { id: string, label: string, selected: boolean, onSelect: (id: string) => void }) => (
   <button
@@ -24,42 +24,35 @@ const ExitIntentModal = ({ blocker }: { blocker: any }) => {
 
   if (blocker.state !== "blocked") return null;
 
-  const handleYes = () => {
-    blocker.reset();
-    navigate('/account?autoStart=true');
-  };
-
-  const handleNo = () => {
-    blocker.reset();
-    navigate('/');
-  };
-
   return (
     <div className="fixed inset-0 z-[200] flex items-center justify-center p-6 animate-in fade-in duration-500">
       <div className="absolute inset-0 bg-[#FAF9F6]/80 backdrop-blur-md" />
       <div className="relative w-full max-w-sm bg-white p-12 rounded-[50px] shadow-2xl border border-gray-100 text-center animate-in zoom-in-95 duration-500">
-        <div className="w-16 h-16 bg-[#FAF9F6] rounded-full mx-auto mb-10 flex items-center justify-center text-2xl shadow-inner border border-white">
-          <span className="animate-bounce">🌱</span>
-        </div>
-        
+        <div className="w-16 h-16 bg-[#FAF9F6] rounded-full mx-auto mb-8 flex items-center justify-center text-2xl">🌱</div>
         <h2 className="text-3xl serif italic mb-6">Pause for a moment.</h2>
-        <p className="text-gray-500 font-light leading-relaxed mb-10 text-sm px-4">
+        <p className="text-gray-500 font-light leading-relaxed mb-10 text-sm">
           Do you want to get a free audit to understand what this does before you commit?
         </p>
-        
-        <div className="space-y-6">
+        <div className="space-y-4">
           <button 
-            onClick={handleYes}
-            className="w-full py-5 bg-black text-white rounded-full font-bold text-base hover:scale-[1.02] transition-transform active:scale-95 shadow-lg shadow-black/10"
+            onClick={() => {
+              // ALWAYS lead to the audit experience
+              blocker.reset();
+              navigate('/account?autoStart=true');
+            }}
+            className="w-full py-5 bg-black text-white rounded-full font-bold text-base hover:scale-[1.02] transition-transform active:scale-95"
           >
             Yes, begin my audit
           </button>
-          
           <button 
-            onClick={handleNo}
-            className="w-full py-2 text-gray-400 text-[10px] font-bold uppercase tracking-[0.4em] hover:text-black transition-colors block"
+            onClick={() => {
+              // Explicitly move away to Home without friction
+              blocker.reset();
+              navigate('/');
+            }}
+            className="w-full py-4 text-gray-300 text-[10px] font-bold uppercase tracking-[0.3em] hover:text-black transition-colors"
           >
-            NO, TAKE ME BACK
+            No, take me back
           </button>
         </div>
       </div>
@@ -68,29 +61,64 @@ const ExitIntentModal = ({ blocker }: { blocker: any }) => {
 };
 
 const Checkout: React.FC = () => {
+  const [isSuccess, setIsSuccess] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('upi');
-  const location = useLocation();
 
+  // Navigation Blocker: Intercepts when user tries to leave checkout via Back or links
   const blocker = useBlocker(
-    ({ nextLocation }) => {
-      if (nextLocation.pathname === location.pathname) return false;
-      
-      const isNavigatingToHome = nextLocation.pathname === '/';
-      const isNavigatingToAuditStart = nextLocation.pathname === '/account' && nextLocation.search.includes('autoStart=true');
-      
-      if (isNavigatingToHome || isNavigatingToAuditStart) {
-        return false;
-      }
-
-      return true;
-    }
+    ({ currentLocation, nextLocation }) =>
+      !isSuccess && currentLocation.pathname !== nextLocation.pathname
   );
 
-  const handleIndiaCheckout = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Immediate redirect to the Shopify cart permalink
-    window.location.href = 'https://linen-logic.myshopify.com/cart/43248450895946:1';
-  };
+  if (isSuccess) {
+    const today = new Date();
+    const start = new Date(today);
+    start.setDate(today.getDate() + 3);
+    const end = new Date(today);
+    end.setDate(today.getDate() + 5);
+    const options: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric' };
+    const dateRange = `${start.toLocaleDateString('en-US', options)} – ${end.toLocaleDateString('en-US', options)}`;
+
+    return (
+      <div className="min-h-screen bg-[#FAF9F6] flex items-center justify-center p-6 animate-in zoom-in-95 duration-700">
+        <div className="max-w-md w-full text-center">
+          <div className="w-24 h-24 bg-white rounded-full mx-auto mb-10 flex items-center justify-center text-3xl shadow-sm border border-gray-100">🌿</div>
+          <h1 className="text-4xl serif italic mb-6">Your season begins.</h1>
+          <p className="text-gray-500 font-light leading-relaxed mb-12">
+            Order confirmed. You are officially part of Batch 04. Your 180-page anchor and ritual kit will ship within 24 hours.
+          </p>
+          <div className="p-10 bg-white rounded-[40px] border border-gray-100 text-left mb-12 shadow-sm relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-4 opacity-5">
+              <svg width="100" height="100" viewBox="0 0 24 24" fill="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/></svg>
+            </div>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-300 mb-6">Order Logistics</p>
+            <div className="space-y-5">
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-400 italic">Order ID</span>
+                <span className="font-mono text-gray-800">#LL-B4-{(Math.random() * 10000).toFixed(0)}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-400 italic">Expected Arrival</span>
+                <span className="text-gray-900 font-bold">{dateRange}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-400 italic">Current Status</span>
+                <span className="text-zinc-500 font-medium">Preparing for Dispatch</span>
+              </div>
+            </div>
+            <div className="mt-8 pt-8 border-t border-gray-50">
+               <a href="#" onClick={(e) => e.preventDefault()} className="text-[10px] font-bold uppercase tracking-[0.2em] text-black underline underline-offset-4 hover:opacity-50 transition-opacity">
+                 Track your anchor →
+               </a>
+            </div>
+          </div>
+          <Link to="/" className="inline-block px-10 py-5 bg-black text-white rounded-full font-medium hover:scale-105 transition-transform shadow-2xl shadow-black/10">
+            Return to Home
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#FAF9F6] animate-in fade-in duration-1000">
@@ -109,7 +137,7 @@ const Checkout: React.FC = () => {
             <p className="text-gray-400 font-light max-w-md">Your kit will be dispatched from our Bangalore hub within 24 hours of confirmation.</p>
           </div>
 
-          <form className="space-y-12" onSubmit={handleIndiaCheckout}>
+          <form className="space-y-12" onSubmit={(e) => { e.preventDefault(); setIsSuccess(true); }}>
             <section className="space-y-8">
               <h3 className="text-[10px] font-bold uppercase tracking-[0.4em] text-gray-300 border-b border-gray-100 pb-2">01 / Shipping Credentials</h3>
               <div className="grid md:grid-cols-2 gap-6">
@@ -144,7 +172,7 @@ const Checkout: React.FC = () => {
             </section>
 
             <button type="submit" className="w-full py-7 bg-black text-white rounded-full font-bold text-xl hover:scale-[1.01] transition-transform shadow-2xl shadow-black/20 active:scale-[0.98]">
-              Checkout in India — $19.00
+              Finalize Order — $19.00
             </button>
           </form>
         </div>

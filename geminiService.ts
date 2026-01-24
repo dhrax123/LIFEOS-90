@@ -1,17 +1,14 @@
 
 import { GoogleGenAI } from "@google/genai";
 
-// Standardized generator for personal manifest guidance using Gemini
 export async function* generatePersonalManifestStream(userData: {
   name: string;
   role: string;
   struggle: string;
 }) {
-  // Always use strictly defined named parameter for initialization per guidelines
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
   
   try {
-    // Generate streaming content using the recommended Gemini 3 Flash model for text tasks
     const responseStream = await ai.models.generateContentStream({
       model: "gemini-3-flash-preview",
       contents: `Generate a short, grounded seasonal guidance message for ${userData.name}, who is a ${userData.role} dealing with ${userData.struggle}. 
@@ -32,7 +29,6 @@ export async function* generatePersonalManifestStream(userData: {
       },
     });
 
-    // Directly iterate over the response stream; chunk.text returns the string content
     for await (const chunk of responseStream) {
       if (chunk.text) {
         yield chunk.text;
@@ -40,7 +36,6 @@ export async function* generatePersonalManifestStream(userData: {
     }
   } catch (error) {
     console.error("Gemini Error:", error);
-    // Robust fallback for service interruptions
     yield "You're at a baseline where clarity starts. Focus on stabilizing your current rhythm. Overthinking the finish line only slows the start. You're on track.";
   }
 }

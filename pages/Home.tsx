@@ -117,12 +117,10 @@ const Home: React.FC = () => {
       <section className="py-32 max-w-4xl mx-auto px-6 text-center">
         <h2 className="text-4xl md:text-5xl serif mb-8 italic">Join the next batch.</h2>
         <p className="text-gray-500 mb-12 font-light">We release 90 planners every month to keep the community intentional.</p>
-        <div className="flex flex-col md:flex-row gap-4 max-w-md mx-auto items-center justify-center">
-          <Link to="/checkout" className="w-full sm:w-auto px-12 py-6 bg-black text-white rounded-full font-bold shadow-xl shadow-black/10 hover:scale-[1.03] transition-transform active:scale-95 text-center">
-            Secure My Kit Now — $19
-          </Link>
+        <div className="flex flex-col md:flex-row gap-4 max-w-md mx-auto">
+          <input type="email" placeholder="email@clarity.com" className="flex-grow px-8 py-5 rounded-full border border-gray-200 focus:outline-none focus:ring-1 focus:ring-black bg-white" />
+          <button className="px-10 py-5 bg-black text-white rounded-full font-bold shadow-xl shadow-black/10">Secure Access</button>
         </div>
-        <p className="mt-8 text-[9px] font-bold uppercase tracking-[0.5em] text-gray-300">BATCH 04 • 85% SOLD OUT</p>
       </section>
     </div>
   );
