@@ -17,8 +17,8 @@ import WhoItsFor from './pages/WhoItsFor';
 import About from './pages/About';
 import Account from './pages/Account';
 import Checkout from './pages/Checkout';
+import Privacy from './pages/Privacy';
 
-// A small component to handle location-based logic inside the router context
 const RouteWatcher: React.FC = () => {
   const { pathname } = useLocation();
   
@@ -47,8 +47,8 @@ const Navbar: React.FC = () => {
           <Link to="/what-is" className="hover:text-black transition-colors">Philosophy</Link>
           <Link to="/how-it-works" className="hover:text-black transition-colors">Method</Link>
           <Link to="/planner" className="hover:text-black transition-colors">The Kit</Link>
-          <Link to="/account" className="px-6 py-2.5 bg-black text-white rounded-full hover:bg-zinc-800 transition-all shadow-lg shadow-black/5">
-            Begin Audit
+          <Link to="/account" className="hover:text-black transition-colors text-black border-b border-black/10 pb-0.5">
+            Get Started
           </Link>
         </div>
 
@@ -62,7 +62,7 @@ const Navbar: React.FC = () => {
           <Link to="/what-is" className="text-2xl serif italic">Philosophy</Link>
           <Link to="/how-it-works" className="text-2xl serif italic">Method</Link>
           <Link to="/planner" className="text-2xl serif italic">The Kit</Link>
-          <Link to="/account" className="text-lg font-bold uppercase tracking-widest text-black">Start My Audit</Link>
+          <Link to="/account" className="text-lg font-bold uppercase tracking-widest text-black">Start Audit</Link>
         </div>
       )}
     </nav>
@@ -75,7 +75,7 @@ const Footer: React.FC = () => (
       <div className="grid grid-cols-1 md:grid-cols-4 gap-20 mb-20">
         <div className="col-span-1 md:col-span-2">
           <h2 className="text-3xl serif mb-8 italic">Linen Logic</h2>
-          <p className="text-gray-400 max-w-sm leading-relaxed mb-8 font-light text-lg">
+          <p className="text-gray-400 max-w-sm leading-relaxed mb-8 font-light text-lg italic">
             A system for clarity in a world of infinite noise. Built for the intentional few.
           </p>
           <div className="flex gap-4">
@@ -95,14 +95,14 @@ const Footer: React.FC = () => (
           <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-300 mb-8">Access</h4>
           <ul className="space-y-4 text-sm text-gray-500 font-light">
             <li><Link to="/about" className="hover:text-black transition-colors">About Us</Link></li>
-            <li><a href="mailto:hello@linenlogic.com" className="hover:text-black transition-colors">Privacy Policy</a></li>
-            <li><Link to="/checkout" className="text-green-600 font-bold tracking-widest hover:underline">BATCH 04 LIVE</Link></li>
+            <li><Link to="/privacy" className="hover:text-black transition-colors">Privacy Policy</Link></li>
+            <li><Link to="/checkout" className="text-black font-bold tracking-widest hover:underline italic">Season One Live</Link></li>
           </ul>
         </div>
       </div>
       <div className="pt-10 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center text-[10px] text-gray-300 font-bold uppercase tracking-[0.3em]">
-        <p>© {new Date().getFullYear()} Linen Logic. India Domestic Fulfillment.</p>
-        <p className="mt-4 md:mt-0">Calm is the ultimate luxury.</p>
+        <p>© {new Date().getFullYear()} Linen Logic. Worldwide Fulfillment.</p>
+        <p className="mt-4 md:mt-0 italic font-medium">Calm is the ultimate luxury.</p>
       </div>
     </div>
   </footer>
@@ -135,6 +135,7 @@ const router = createHashRouter([
       { path: "about", element: <About /> },
       { path: "account", element: <Account /> },
       { path: "checkout", element: <Checkout /> },
+      { path: "privacy", element: <Privacy /> },
     ],
   },
 ]);
