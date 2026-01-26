@@ -79,7 +79,7 @@ const Home: React.FC = () => {
           </div>
           <div className="bg-white p-4 rounded-[60px] md:rounded-[100px] card-shadow border border-gray-50 transform lg:rotate-2 overflow-hidden aspect-[3/4]">
              <img 
-              src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=1200&auto=format&fit=crop" 
+              src="https://images.unsplash.com/photo-1769286145156-70a40fff80ec?q=80&w=1200&auto=format&fit=crop" 
               alt="Linen Logic Full Kit" 
               className="w-full h-full object-cover grayscale-[0.1] hover:grayscale-0 transition-all duration-1000"
             />

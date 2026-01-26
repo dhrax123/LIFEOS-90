@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate, useBlocker, useLocation } from 'react-router-dom';
 
@@ -138,7 +137,7 @@ const Checkout: React.FC = () => {
             </section>
 
             <button type="submit" className="w-full py-7 bg-black text-white rounded-full font-bold text-xl hover:scale-[1.01] transition-transform shadow-2xl shadow-black/20 active:scale-[0.98]">
-              Finalize Order — $19.00
+              Finalize Order — $21.90
             </button>
           </form>
         </div>
@@ -151,7 +150,7 @@ const Checkout: React.FC = () => {
             
             <div className="flex gap-6 mb-12 pb-10 border-b border-gray-50 items-start">
                <div className="w-24 h-28 bg-[#F5F3EF] rounded-[2rem] overflow-hidden flex-shrink-0 shadow-sm border border-gray-50">
-                  <img src="https://images.unsplash.com/photo-1544377193-33dcf4d68fb5?q=80&w=400&auto=format&fit=crop" className="w-full h-full object-cover grayscale" alt="Season 1 Kit" />
+                  <img src="https://images.unsplash.com/photo-1769286145156-70a40fff80ec?q=80&w=1200&auto=format&fit=crop" className="w-full h-full object-cover grayscale" alt="Season 1 Kit" />
                </div>
                <div className="py-2">
                  <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-gray-300 mb-2 italic">Worldwide Fulfillment</p>
@@ -162,11 +161,11 @@ const Checkout: React.FC = () => {
 
             <div className="space-y-5 mb-12 px-2">
               <div className="flex justify-between text-xs font-light italic">
-                <span className="text-gray-400">Tactile Artifacts (Net)</span>
-                <span className="text-gray-600">$16.10</span>
+                <span className="text-gray-400">THE KIT</span>
+                <span className="text-gray-600">$19.00</span>
               </div>
               <div className="flex justify-between text-xs font-light italic">
-                <span className="text-gray-400">International Tax / Duties</span>
+                <span className="text-gray-400">GST</span>
                 <span className="text-gray-600">$2.90</span>
               </div>
               <div className="flex justify-between text-xs font-light italic">
@@ -178,7 +177,7 @@ const Checkout: React.FC = () => {
             <div className="pt-8 border-t border-black/5 flex justify-between items-end mb-10">
               <div className="space-y-1">
                 <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-gray-300 block italic">Total Due</span>
-                <span className="text-4xl font-medium text-black">$19.00</span>
+                <span className="text-4xl font-medium text-black">$21.90</span>
               </div>
               <div className="text-right">
                 <p className="text-[8px] font-bold text-gray-400 uppercase tracking-widest leading-relaxed italic">

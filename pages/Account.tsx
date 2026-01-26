@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { generatePersonalManifestStream } from '../geminiService';
@@ -12,9 +11,7 @@ const Account: React.FC = () => {
   const [formData, setFormData] = useState({ name: '', role: '', struggle: '', customRole: '' });
   
   const [isThinking, setIsThinking] = useState(false);
-  const [isTyping, setIsTyping] = useState(false);
   const [fullManifestText, setFullManifestText] = useState('');
-  const [displayedText, setDisplayedText] = useState('');
   const [showCTA, setShowCTA] = useState(false);
   const [chaskaMaska, setChaskaMaska] = useState('');
 
@@ -35,44 +32,27 @@ const Account: React.FC = () => {
 
   const handleAuditSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
     setStep(2); 
     setIsThinking(true);
     setChaskaMaska(chaskaOptions[Math.floor(Math.random() * chaskaOptions.length)]);
     
     const roleToUse = formData.role === 'other' ? (formData.customRole || 'Explorer') : formData.role;
-    const stream = generatePersonalManifestStream({ ...formData, role: roleToUse });
+    const stream = generatePersonalManifestStream({ ...formData, role: roleToUse, struggle: formData.struggle });
     
     let aiAccumulated = '';
-    const fetchPromise = (async () => {
+    try {
       for await (const chunk of stream) {
         aiAccumulated += chunk;
       }
-      return aiAccumulated;
-    })();
-
-    const pausePromise = new Promise(resolve => setTimeout(resolve, 6000));
-    const [finalAIContent] = await Promise.all([fetchPromise, pausePromise]);
-    
-    setFullManifestText(finalAIContent.trim());
-    setIsThinking(false);
-    setIsTyping(true);
-  };
-
-  useEffect(() => {
-    if (isTyping && fullManifestText) {
-      let index = 0;
-      const interval = setInterval(() => {
-        setDisplayedText(fullManifestText.slice(0, index + 1));
-        index++;
-        if (index >= fullManifestText.length) {
-          clearInterval(interval);
-          setIsTyping(false);
-          setTimeout(() => setShowCTA(true), 1500);
-        }
-      }, 35); 
-      return () => clearInterval(interval);
+      setFullManifestText(aiAccumulated.trim());
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsThinking(false);
+      setTimeout(() => setShowCTA(true), 1000);
     }
-  }, [isTyping, fullManifestText]);
+  };
 
   if (step === 0) {
     return (
@@ -123,25 +103,13 @@ const Account: React.FC = () => {
                 </button>
               ))}
             </div>
-            {formData.role === 'other' && (
-              <div className="animate-in slide-in-from-top-2 duration-500 mt-4 space-y-4">
-                <label className="text-[10px] font-bold uppercase tracking-[0.4em] text-gray-300 ml-4">What are you doing right now?</label>
-                <input 
-                  required
-                  className="w-full bg-white border border-gray-100 p-6 md:p-8 rounded-[32px] md:rounded-[40px] focus:outline-none focus:border-black/10 transition-all text-base md:text-xl font-light shadow-sm italic"
-                  placeholder="e.g. Building a startup, Writing a thesis..."
-                  value={formData.customRole}
-                  onChange={e => setFormData({...formData, customRole: e.target.value})}
-                />
-              </div>
-            )}
           </div>
 
           <div className="space-y-4">
             <label className="text-[10px] font-bold uppercase tracking-[0.4em] text-gray-300 ml-4">Current Weight</label>
             <textarea 
               required
-              className="w-full bg-white border border-gray-100 p-8 md:p-10 rounded-[32px] md:rounded-[48px] h-40 md:h-52 focus:outline-none focus:border-black/10 transition-all text-base md:text-xl font-light resize-none shadow-sm italic"
+              className="w-full bg-white border border-gray-100 p-8 md:p-10 rounded-[32px] md:rounded-[48px] min-h-[160px] md:min-h-[200px] focus:outline-none focus:border-black/10 transition-all text-base md:text-xl font-light shadow-sm italic"
               placeholder="What feels heaviest right now?"
               value={formData.struggle}
               onChange={e => setFormData({...formData, struggle: e.target.value})}
@@ -179,23 +147,21 @@ const Account: React.FC = () => {
                </p>
             </div>
           ) : (
-            <div className="space-y-12">
+            <div className="space-y-12 animate-in fade-in duration-1000">
+              <p className="text-[10px] font-bold uppercase tracking-[0.6em] text-gray-300 italic">Seasonal Guidance</p>
               <p className="literary italic text-xl md:text-4xl leading-[1.7] md:leading-[1.8] text-gray-800 font-light text-left whitespace-pre-wrap">
-                {displayedText}
-                {isTyping && <span className="inline-block w-[1.5px] h-7 bg-black/20 ml-1 animate-pulse" />}
+                {fullManifestText}
               </p>
               
-              {!isTyping && (
-                <p className="text-[10px] font-bold uppercase tracking-[0.6em] text-gray-300 animate-in fade-in duration-1000 italic">
-                  — {chaskaMaska}
-                </p>
-              )}
+              <p className="text-[10px] font-bold uppercase tracking-[0.6em] text-gray-300 italic">
+                — {chaskaMaska}
+              </p>
             </div>
           )}
         </div>
       </div>
 
-      {showCTA && (
+      {showCTA && !isThinking && (
         <div className="mt-16 md:mt-24 text-center animate-in slide-in-from-bottom-8 duration-1000">
           <Link 
             to="/checkout"

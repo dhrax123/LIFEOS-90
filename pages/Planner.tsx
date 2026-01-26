@@ -53,7 +53,7 @@ const Planner: React.FC = () => {
            <div className="bg-[#F5F3EF] rounded-[60px] p-2 card-shadow overflow-hidden max-w-lg aspect-[3/4.5] flex items-center justify-center">
              {/* Main image placeholder for the user's kit photo */}
              <img 
-              src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=1200&auto=format&fit=crop" 
+              src="https://images.unsplash.com/photo-1769286145156-70a40fff80ec?q=80&w=1200&auto=format&fit=crop" 
               alt="Linen Logic Seasonal Kit (Woven Basket & Cream Ribbon)" 
               className="rounded-[58px] shadow-sm w-full h-full object-cover grayscale-[0.05] hover:grayscale-0 transition-all duration-1000"
              />
@@ -113,7 +113,7 @@ const Planner: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-24 items-center">
           <div className="rounded-[40px] overflow-hidden card-shadow group transition-all duration-700 relative h-[500px]">
             <img 
-              src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=1000&auto=format&fit=crop" 
+              src="https://images.unsplash.com/photo-1769286145156-70a40fff80ec?q=80&w=1200&auto=format&fit=crop" 
               alt="Serene workspace with Linen Logic Kit" 
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 grayscale-[0.2]"
             />
